@@ -1,0 +1,1104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Golden Harvest Farm</title>
+   
+        <style>
+/* ========================================
+   GOLDEN HARVEST FARM - ADMIN DASHBOARD
+   Complete CSS Stylesheet
+   ======================================== */
+
+/* === RESET & BASE STYLES === */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 16px;
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #f5f5f5;
+    color: #333;
+    line-height: 1.6;
+    min-height: 100vh;
+}
+
+/* === TYPOGRAPHY === */
+h1, h2, h3, h4, h5, h6 {
+    color: #2E5C32;
+    font-weight: 600;
+    line-height: 1.3;
+    margin-bottom: 1rem;
+}
+
+h1 {
+    font-size: 2rem;
+}
+
+h2 {
+    font-size: 1.75rem;
+}
+
+h3 {
+    font-size: 1.35rem;
+    margin-top: 2rem;
+}
+
+p {
+    margin-bottom: 1rem;
+    color: #555;
+}
+
+a {
+    color: #4A7C4E;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: #2E5C32;
+    text-decoration: underline;
+}
+
+/* === CONTAINER & LAYOUT === */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    width: 100%;
+}
+
+/* === LOGIN PAGE === */
+.admin-login-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #4A7C4E 0%, #2E5C32 100%);
+    padding: 1rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.admin-login-container::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+    animation: pulse 15s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 0.5; }
+    50% { transform: scale(1.1); opacity: 0.8; }
+}
+
+.admin-login-box {
+    background: white;
+    padding: 3rem;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    max-width: 450px;
+    width: 100%;
+    animation: fadeInUp 0.6s ease;
+    position: relative;
+    z-index: 1;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.admin-login-box h2 {
+    color: #2E5C32;
+    text-align: center;
+    margin-bottom: 2rem;
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+/* === ADMIN HEADER === */
+.admin-header {
+    background: linear-gradient(135deg, #4A7C4E 0%, #2E5C32 100%);
+    color: white;
+    padding: 1.5rem 0;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.admin-header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.admin-header h1 {
+    font-size: 1.5rem;
+    margin: 0;
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.admin-header p {
+    margin: 0;
+    opacity: 0.9;
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+/* === ADMIN NAVIGATION === */
+.admin-nav {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.admin-nav button {
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid transparent;
+    color: white;
+    cursor: pointer;
+    font-size: 0.95rem;
+    font-weight: 500;
+    padding: 0.75rem 1.25rem;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+.admin-nav button:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+}
+
+.admin-nav button.active {
+    background: white;
+    color: #2E5C32;
+    font-weight: 600;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* === ADMIN CONTENT === */
+.admin-content {
+    padding: 2.5rem 0;
+    min-height: calc(100vh - 200px);
+}
+
+/* === SECTIONS === */
+.admin-section {
+    display: none;
+    animation: fadeIn 0.4s ease;
+}
+
+.admin-section.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* === STATISTICS GRID === */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+}
+
+.stat-card {
+    background: white;
+    padding: 2rem 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    text-align: center;
+    transition: all 0.3s ease;
+    border-top: 4px solid #4A7C4E;
+    position: relative;
+    overflow: hidden;
+}
+
+.stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(74, 124, 78, 0.05) 0%, transparent 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.stat-card:hover::before {
+    opacity: 1;
+}
+
+.stat-card h3 {
+    color: #757575;
+    font-size: 0.9rem;
+    margin-bottom: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 600;
+}
+
+.stat-card .stat-value {
+    font-size: 3rem;
+    font-weight: 700;
+    color: #4A7C4E;
+    margin-top: 0.5rem;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    line-height: 1;
+}
+
+/* === ADMIN ACTIONS BAR === */
+.admin-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+/* === FORMS === */
+.form-container {
+    background: white;
+    padding: 2.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    margin-top: 2rem;
+    border: 1px solid #e0e0e0;
+}
+
+.form-group {
+    margin-bottom: 1.75rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.6rem;
+    color: #2E5C32;
+    font-weight: 600;
+    font-size: 0.95rem;
+    letter-spacing: 0.3px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 0.85rem 1.15rem;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-family: inherit;
+    transition: all 0.3s ease;
+    background: white;
+    color: #333;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #4A7C4E;
+    box-shadow: 0 0 0 4px rgba(74, 124, 78, 0.1);
+    background: #fafafa;
+}
+
+.form-group input:hover,
+.form-group select:hover,
+.form-group textarea:hover {
+    border-color: #c0c0c0;
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 120px;
+    line-height: 1.6;
+}
+
+.form-group select {
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%234A7C4E' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    padding-right: 2.5rem;
+}
+
+.form-group small {
+    display: block;
+    margin-top: 0.4rem;
+    font-size: 0.85rem;
+    color: #757575;
+    font-style: italic;
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+    color: #999;
+}
+
+/* === BUTTONS === */
+.btn {
+    padding: 0.85rem 2rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: inline-block;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.btn:active::before {
+    width: 300px;
+    height: 300px;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #4A7C4E 0%, #2E5C32 100%);
+    color: white;
+    box-shadow: 0 4px 15px rgba(74, 124, 78, 0.3);
+}
+
+.btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 25px rgba(74, 124, 78, 0.4);
+}
+
+.btn-primary:active {
+    transform: translateY(-1px);
+}
+
+.btn-secondary {
+    background: #e0e0e0;
+    color: #555;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.btn-secondary:hover {
+    background: #d0d0d0;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.form-buttons {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2.5rem;
+    flex-wrap: wrap;
+}
+
+.form-buttons button {
+    flex: 1;
+    min-width: 200px;
+}
+
+/* === TABLES === */
+.listing-table {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    margin-top: 1.5rem;
+    border: 1px solid #e0e0e0;
+}
+
+.listing-table table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.listing-table th {
+    background: linear-gradient(135deg, #4A7C4E 0%, #2E5C32 100%);
+    color: white;
+    padding: 1.25rem 1rem;
+    text-align: left;
+    font-weight: 600;
+    font-size: 0.95rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.listing-table td {
+    padding: 1.25rem 1rem;
+    border-bottom: 1px solid #f0f0f0;
+    font-size: 0.95rem;
+    color: #555;
+}
+
+.listing-table tbody tr {
+    transition: all 0.3s ease;
+}
+
+.listing-table tbody tr:hover {
+    background: linear-gradient(90deg, #f0f7f1 0%, #fafafa 100%);
+    cursor: pointer;
+    transform: scale(1.01);
+}
+
+.listing-table tr:last-child td {
+    border-bottom: none;
+}
+
+/* === LISTING IMAGES === */
+.listing-image-small {
+    width: 70px;
+    height: 70px;
+    object-fit: cover;
+    border-radius: 10px;
+    border: 2px solid #e0e0e0;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.listing-image-small:hover {
+    transform: scale(2);
+    border-color: #4A7C4E;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    z-index: 100;
+    position: relative;
+}
+
+/* === BADGES === */
+.badge {
+    display: inline-block;
+    padding: 0.4rem 1rem;
+    border-radius: 25px;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    border: 2px solid;
+}
+
+.badge-chicken {
+    background: linear-gradient(135deg, #FFF3E0 0%, #FFE0B2 100%);
+    color: #F57C00;
+    border-color: #FFCC80;
+}
+
+.badge-goat {
+    background: linear-gradient(135deg, #E8F5E9 0%, #C8E6C9 100%);
+    color: #2E7D32;
+    border-color: #A5D6A7;
+}
+
+/* === ACTION BUTTONS === */
+.action-buttons {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.action-buttons button {
+    padding: 0.6rem 1.25rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.875rem;
+    transition: all 0.3s ease;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.action-buttons button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.btn-edit {
+    background: linear-gradient(135deg, #F9A825 0%, #F57F17 100%);
+    color: white;
+}
+
+.btn-edit:hover {
+    background: linear-gradient(135deg, #F57F17 0%, #E65100 100%);
+}
+
+.btn-delete {
+    background: linear-gradient(135deg, #d32f2f 0%, #b71c1c 100%);
+    color: white;
+}
+
+.btn-delete:hover {
+    background: linear-gradient(135deg, #b71c1c 0%, #8B0000 100%);
+}
+
+/* === MESSAGES === */
+.messages-list {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    border: 1px solid #e0e0e0;
+}
+
+.message-item {
+    padding: 1.75rem;
+    border-bottom: 1px solid #f0f0f0;
+    transition: all 0.3s ease;
+}
+
+.message-item:hover {
+    background: linear-gradient(90deg, #f0f7f1 0%, #fafafa 100%);
+    padding-left: 2rem;
+}
+
+.message-item:last-child {
+    border-bottom: none;
+}
+
+.message-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.message-name {
+    font-weight: 700;
+    color: #2E5C32;
+    font-size: 1.1rem;
+}
+
+.message-date {
+    color: #999;
+    font-size: 0.875rem;
+    font-style: italic;
+}
+
+.message-subject {
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+    color: #333;
+    font-size: 1rem;
+}
+
+.message-content {
+    color: #555;
+    margin-bottom: 0.75rem;
+    line-height: 1.6;
+}
+
+.message-contact {
+    font-size: 0.875rem;
+    color: #757575;
+    font-weight: 500;
+}
+
+/* === ALERTS === */
+.alert {
+    padding: 1.25rem 1.75rem;
+    border-radius: 10px;
+    margin-bottom: 1.5rem;
+    animation: slideDown 0.4s ease;
+    border-left: 5px solid;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.alert-success {
+    background: linear-gradient(135deg, #E8F5E9 0%, #C8E6C9 100%);
+    color: #2E7D32;
+    border-color: #4A7C4E;
+}
+
+.alert-error {
+    background: linear-gradient(135deg, #FFEBEE 0%, #FFCDD2 100%);
+    color: #C62828;
+    border-color: #d32f2f;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* === LOADING SPINNER === */
+.loading {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    border: 3px solid rgba(74, 124, 78, 0.2);
+    border-radius: 50%;
+    border-top-color: #4A7C4E;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+
+.loading-overlay .loading {
+    width: 60px;
+    height: 60px;
+    border-width: 6px;
+}
+
+/* === EMPTY STATE === */
+.empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+    color: #999;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.empty-state svg {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 1.5rem;
+    opacity: 0.4;
+    color: #4A7C4E;
+}
+
+.empty-state h3 {
+    color: #757575;
+    margin-bottom: 0.5rem;
+}
+
+.empty-state p {
+    color: #999;
+    font-size: 0.95rem;
+}
+
+/* === RESPONSIVE DESIGN === */
+@media (max-width: 992px) {
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 0 1rem;
+    }
+
+    .admin-header .container {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .admin-nav {
+        width: 100%;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .admin-nav button {
+        width: 100%;
+        text-align: left;
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .admin-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .form-container {
+        padding: 1.5rem;
+    }
+
+    .form-buttons {
+        flex-direction: column;
+    }
+
+    .form-buttons button {
+        width: 100%;
+        min-width: 100%;
+    }
+
+    .listing-table {
+        overflow-x: auto;
+    }
+
+    .listing-table table {
+        min-width: 800px;
+    }
+
+    .action-buttons {
+        flex-direction: column;
+    }
+
+    .action-buttons button {
+        width: 100%;
+    }
+
+    .admin-header h1 {
+        font-size: 1.25rem;
+    }
+
+    .admin-login-box {
+        padding: 2rem;
+    }
+
+    .stat-card .stat-value {
+        font-size: 2.5rem;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .admin-login-box {
+        padding: 1.5rem;
+    }
+
+    .stat-card {
+        padding: 1.5rem 1rem;
+    }
+
+    .btn {
+        padding: 0.75rem 1.5rem;
+        font-size: 0.9rem;
+    }
+}
+
+/* === UTILITY CLASSES === */
+.text-center {
+    text-align: center;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.text-left {
+    text-align: left;
+}
+
+.mt-1 { margin-top: 0.5rem; }
+.mt-2 { margin-top: 1rem; }
+.mt-3 { margin-top: 1.5rem; }
+.mt-4 { margin-top: 2rem; }
+
+.mb-1 { margin-bottom: 0.5rem; }
+.mb-2 { margin-bottom: 1rem; }
+.mb-3 { margin-bottom: 1.5rem; }
+.mb-4 { margin-bottom: 2rem; }
+
+.p-1 { padding: 0.5rem; }
+.p-2 { padding: 1rem; }
+.p-3 { padding: 1.5rem; }
+.p-4 { padding: 2rem; }
+
+/* === PRINT STYLES === */
+@media print {
+    .admin-header,
+    .admin-nav,
+    .btn,
+    .action-buttons {
+        display: none;
+    }
+
+    .admin-section {
+        display: block !important;
+    }
+
+    body {
+        background: white;
+    }
+
+    .listing-table,
+    .messages-list,
+    .stat-card {
+        box-shadow: none;
+        border: 1px solid #ddd;
+    }
+}
+
+
+.logo-icon {
+    width: 60px;
+    height: 60px;
+    color: #4A7C4E;
+}
+
+
+.toast-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.45);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.toast-content {
+    background: #ffffff;
+    padding: 20px 25px;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 320px;
+    text-align: center;
+    box-shadow: 0px 4px 20px rgba(0,0,0,0.2);
+    animation: fadeIn 0.25s ease-out;
+}
+
+.toast-content p {
+    margin-bottom: 15px;
+    font-size: 1rem;
+    color: #333;
+}
+
+#toastCloseBtn {
+    background: #2E5C32;
+    padding: 8px 20px;
+    border: none;
+    color: white;
+    cursor: pointer;
+    border-radius: 6px;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+}
+    </style>
+</head>
+<body>
+    <!-- Admin Login Screen -->
+    <div id="adminLogin" class="admin-login-container">
+        <div class="admin-login-box">
+            <div style="text-align: center; margin-bottom: 2rem;">
+               <img class="logo-icon" src="/frontend/images/logo_GHF-removebg-preview.png" alt="">
+            </div>
+            <h2>Admin Login</h2>
+            <form id="adminLoginForm" onsubmit="handleAdminLogin(event)">
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" name="password" placeholder="Enter admin password" required autofocus>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Login</button>
+            </form>
+            <p style="text-align: center; margin-top: 1rem; color: #757575; font-size: 0.875rem;">
+                <a href="../index.html" style="color: #4A7C4E;">← Back to Main Site</a>
+            </p>
+        </div>
+    </div>
+
+    <!-- Admin Dashboard -->
+    <div id="adminDashboard" style="display: none;">
+        <!-- Admin Header -->
+        <header class="admin-header">
+            <div class="container">
+                <div>
+                    <h1> <img class="logo-icon" src="/frontend/images/logo_GHF-removebg-preview.png" alt="">Golden Harvest Farm - Admin Dashboard</h1>
+                    <p style="margin: 0; opacity: 0.9; font-size: 0.875rem;">Farm Fresh. Fairly Traded.</p>
+                </div>
+                <div class="admin-nav">
+                    <button onclick="showAdminSection('overview')" class="active" id="navOverview">Overview</button>
+                    <button onclick="showAdminSection('listings')" id="navListings">Manage Listings</button>
+                    <button onclick="showAdminSection('create')" id="navCreate">Add New Listing</button>
+                    <button onclick="showAdminSection('messages')" id="navMessages">Messages</button>
+                    <button onclick="adminLogout()" style="background: rgba(255,255,255,0.2);">Logout</button>
+                </div>
+            </div>
+        </header>
+
+        <div class="admin-content">
+            <div class="container">
+                <!-- Overview Section -->
+                <div id="overviewSection" class="admin-section active">
+                    <h2 style="margin-bottom: 2rem;">Dashboard Overview</h2>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <h3>Total Listings</h3>
+                            <div class="stat-value" id="statTotalListings">0</div>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Active Listings</h3>
+                            <div class="stat-value" id="statActiveListings">0</div>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Total Messages</h3>
+                            <div class="stat-value" id="statTotalMessages">0</div>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Chickens Available</h3>
+                            <div class="stat-value" id="statChickens">0</div>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Goats Available</h3>
+                            <div class="stat-value" id="statGoats">0</div>
+                        </div>
+                    </div>
+                    
+                    <h3>Recent Listings</h3>
+                    <div id="recentListingsTable"></div>
+                </div>
+
+                <!-- Listings Management Section -->
+                <div id="listingsSection" class="admin-section">
+                    <div class="admin-actions">
+                        <h2>Manage Listings</h2>
+                        <button class="btn btn-primary" onclick="showAdminSection('create')">+ Add New Listing</button>
+                    </div>
+                    <div id="allListingsTable" class="listing-table"></div>
+                </div>
+
+                <!-- Create Listing Section -->
+                <div id="createSection" class="admin-section">
+                    <h2>Add New Listing</h2>
+                    <div class="form-container">
+                        <form id="createListingForm" onsubmit="handleCreateListing(event)">
+                            <div class="form-group">
+                                <label>Animal Type *</label>
+                                <select name="animalType" required>
+                                    <option value="">Select animal type</option>
+                                    <option value="chicken">Chicken</option>
+                                    <option value="goat">Goat</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Breed/Variety *</label>
+                                <input type="text" name="breed" placeholder="e.g., Rhode Island Red, Boer Goat" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Quantity Available *</label>
+                                <input type="number" name="quantity" min="1" placeholder="Number of animals" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Price per Unit (RWF) *</label>
+                                <input type="number" name="pricePerUnit" min="1" placeholder="Price in Rwandan Francs" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Description *</label>
+                                <textarea name="description" rows="4" placeholder="Describe the livestock condition, feeding, health status, etc." required></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>Image URL *</label>
+                                <input type="url" name="image" placeholder="https://example.com/image.jpg" required>
+                                <small style="color: #757575;">Enter a valid image URL</small>
+                            </div>
+                            <div class="form-group">
+                                <label>Health/Vaccination Status *</label>
+                                <input type="text" name="healthStatus" placeholder="e.g., Fully Vaccinated, Healthy, Excellent" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Location *</label>
+                                <input type="text" name="location" placeholder="e.g., Kigali, Musanze" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Contact Phone *</label>
+                                <input type="tel" name="phone" placeholder="+250 788 000 000" required>
+                            </div>
+                            <div class="form-buttons">
+                                <button type="submit" class="btn btn-primary">Create Listing</button>
+                                <button type="button" class="btn btn-secondary" onclick="document.getElementById('createListingForm').reset()">Clear Form</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Messages Section -->
+                <div id="messagesSection" class="admin-section">
+                    <h2>Customer Messages</h2>
+                    <div id="messagesList" class="messages-list"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast / Alert Modal -->
+<div id="toastModal" class="toast-modal">
+  <div class="toast-content">
+    <p id="toastMessage"></p>
+    <button id="toastCloseBtn">OK</button>
+  </div>
+</div>
+
+    <script src="admin.js"></script>
+</body>
+</html>

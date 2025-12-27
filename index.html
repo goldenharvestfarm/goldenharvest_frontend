@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-translate="meta_title">Golden Harvest Farm - Farm Fresh. Fairly Traded.</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="nav-wrapper">
+                <div class="logo" onclick="showPage('home')">
+                  <img class="logo-icon" src="/frontend/images/logo_GHF-removebg-preview.png" alt="">
+                    <div>
+                        <h1 data-translate="site_name">Golden Harvest Farm</h1>
+                        <p class="tagline" data-translate="tagline">Farm Fresh. Fairly Traded.</p>
+                    </div>
+                </div>
+                
+               <nav class="desktop-nav">
+    <a href="#" onclick="showPage('home')" data-translate="nav_home">Home</a>
+    <a href="#" onclick="showPage('buy')" data-translate="nav_buy">Buy Livestock</a>
+    <a href="#" onclick="showPage('about')" data-translate="nav_about">About Us</a>
+    <a href="#" onclick="showPage('contact')" data-translate="nav_contact">Contact</a>
+    <a href="#" onclick="showPage('cart')" class="cart-link" data-translate="nav_cart_label">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="9" cy="21" r="1"></circle>
+            <circle cx="20" cy="21" r="1"></circle>
+            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+        </svg>
+        <span id="cartCount" class="cart-count" data-translate="cart_count">0</span>
+    </a>
+
+    <select id="languageSwitcher" onchange="changeLanguage()" class="lang-switcher" aria-label="Language switcher">
+      <option value="en" data-translate="lang_en">English</option>
+      <option value="rw" data-translate="lang_rw">Kinyarwanda</option>
+    </select>
+
+</nav>
+
+                <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+
+            <nav class="mobile-nav" id="mobileNav">
+    <a href="#" onclick="showPage('home'); toggleMobileMenu()" data-translate="nav_home">Home</a>
+    <a href="#" onclick="showPage('buy'); toggleMobileMenu()" data-translate="nav_buy">Buy Livestock</a>
+    <a href="#" onclick="showPage('about'); toggleMobileMenu()" data-translate="nav_about">About Us</a>
+    <a href="#" onclick="showPage('contact'); toggleMobileMenu()" data-translate="nav_contact">Contact</a>
+    <a href="#" onclick="showPage('cart'); toggleMobileMenu()" data-translate="nav_cart">
+        <span data-translate="cart_text">Cart</span> (<span id="mobileCartCount" data-translate="cart_count_mobile">0</span>)
+    </a>
+
+    <select id="mobileLanguageSwitcher" onchange="changeLanguage()" class="lang-switcher" aria-label="Mobile language switcher">
+      <option value="en" data-translate="lang_en">English</option>
+      <option value="rw" data-translate="lang_rw">Kinyarwanda</option>
+    </select>
+
+</nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main id="mainContent">
+        <!-- Home Page -->
+        <div id="homePage" class="page active">
+            <!-- Hero Section -->
+            <section class="hero">
+                <div class="hero-overlay"></div>
+                <div class="hero-content">
+                    <h2 data-translate="hero_title">Your Trusted Livestock Marketplace</h2>
+                    <p data-translate="hero_sub">Connecting farmers with buyers for quality chickens and goats</p>
+                    <div class="hero-buttons">
+                        <button class="btn btn-primary" onclick="showPage('buy')" data-translate="btn_buy">Buy Quality Livestock</button>
+                        <button class="btn btn-outline" onclick="showPage('contact')" data-translate="btn_contact">Contact Us</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- About Section -->
+            <section class="about-section">
+                <div class="container">
+                    <h2 data-translate="why_choose">Why Choose Golden Harvest Farm?</h2>
+                    <div class="features-grid">
+                        <div class="feature-card">
+                            <div class="feature-icon">✓</div>
+                            <h3 data-translate="quality_assured">Quality Assured</h3>
+                            <p data-translate="quality_desc">All livestock are health-checked and certified</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">🤝</div>
+                            <h3 data-translate="fair_pricing">Fair Pricing</h3>
+                            <p data-translate="fair_desc">Transparent pricing that benefits both buyers and sellers</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">🔗</div>
+                            <h3 data-translate="direct_connection">Direct Connection</h3>
+                            <p data-translate="direct_desc">Connect directly with our farm for quality livestock</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- How It Works -->
+            <section class="how-it-works">
+        <div class="container">
+            <h2 data-translate="how_it_works">How It Works</h2>
+            <div class="works-grid">
+                <div class="works-column">
+                    <h3 data-translate="for_buyers">For Buyers</h3>
+                    <ul class="icon-list">
+                        <li>
+                            <div class="icon">✓</div>
+                            <span data-translate="browse_livestock">Browse available livestock</span>
+                        </li>
+                        <li>
+                            <div class="icon">✓</div>
+                            <span data-translate="contact_us_directly">Contact us directly</span>
+                        </li>
+                        <li>
+                            <div class="icon">✓</div>
+                            <span data-translate="arrange_pickup">Arrange pickup/delivery</span>
+                        </li>
+                        <li>
+                            <div class="icon">✓</div>
+                            <span data-translate="enjoy_quality">Enjoy farm-fresh quality</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="works-column">
+                    <h3 data-translate="our_commitment">Our Commitment</h3>
+                    <ul class="icon-list">
+                        <li>
+                            <div class="icon">✓</div>
+                            <span data-translate="maintain_healthy">Maintain healthy livestock</span>
+                        </li>
+                        <li>
+                            <div class="icon">✓</div>
+                            <span data-translate="update_listings">Update listings regularly</span>
+                        </li>
+                        <li>
+                            <div class="icon">✓</div>
+                            <span data-translate="provide_fair_pricing">Provide fair pricing</span>
+                        </li>
+                        <li>
+                            <div class="icon">✓</div>
+                            <span data-translate="ensure_satisfaction">Ensure customer satisfaction</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+            <!-- Latest Listings Preview -->
+            <section class="listings-preview">
+                <div class="container">
+                    <h2 data-translate="latest_listings">Latest Listings</h2>
+                    <div id="homeListingsGrid" class="listings-grid"></div>
+                    <button class="btn btn-primary" onclick="showPage('buy')" style="margin-top: 2rem;" data-translate="view_all">View All Livestock</button>
+                </div>
+            </section>
+        </div>
+
+        <!-- Buy Page -->
+        <div id="buyPage" class="page">
+            <div class="container">
+                <h2 style="color: #4A7C4E;" data-translate="buy_page_title">Buy Quality Livestock</h2>
+                
+                <div class="buy-layout">
+                    <!-- Filters Sidebar -->
+                    <aside class="filters-sidebar">
+    <h3 data-translate="filter_listings">Filter Listings</h3>
+    
+    <div class="filter-group">
+        <label data-translate="label_animal_type">Animal Type</label>
+        <select id="filterAnimalType" onchange="applyFilters()" data-translate="select_animal_type">
+            <option value="all" data-translate="option_all_animals">All Animals</option>
+            <option value="chicken" data-translate="option_chicken">Chicken</option>
+            <option value="goat" data-translate="option_goat">Goat</option>
+        </select>
+    </div>
+
+    <div class="filter-group">
+        <label data-translate="label_breed">Breed/Variety</label>
+        <input type="text" id="filterBreed" placeholder="e.g., Boer, Rhode Island" oninput="applyFilters()" data-translate-placeholder="placeholder_breed">
+        <small style="color: #757575; font-size: 0.85rem; margin-top: 0.25rem; display: block;" data-translate="search_by_breed">
+            Search by breed name (e.g., Boer Goat, Broiler)
+        </small>
+    </div>
+
+    <div class="filter-group">
+        <label data-translate="label_price_range">Price Range (RWF)</label>
+        <input type="number" id="filterMinPrice" placeholder="Min" onchange="applyFilters()" data-translate-placeholder="placeholder_min">
+        <input type="number" id="filterMaxPrice" placeholder="Max" onchange="applyFilters()" data-translate-placeholder="placeholder_max">
+    </div>
+
+    <div class="filter-group">
+        <label data-translate="label_location">Location</label>
+        <input type="text" id="filterLocation" placeholder="Enter location" oninput="applyFilters()" data-translate-placeholder="placeholder_location">
+    </div>
+
+    <button class="btn btn-secondary" onclick="clearFilters()" data-translate="btn_clear_filters">Clear Filters</button>
+</aside>
+
+                    <!-- Listings Grid -->
+                    <div class="listings-content">
+                        <div id="listingsGrid" class="listings-grid"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- About Us Page -->
+        <div id="aboutPage" class="page">
+            <div class="container">
+                <div class="about-content">
+                    <h2 data-translate="about_title">About Golden Harvest Farm</h2>
+                    <div class="about-text">
+                        <p data-translate="about_paragraph_1">Welcome to Golden Harvest Farm, your trusted source for quality livestock in Rwanda. We specialize in raising and selling healthy chickens and goats for consumption.</p>
+                        
+                        <h3 data-translate="our_mission_title">Our Mission</h3>
+                        <p data-translate="our_mission_text">To provide fresh, healthy, and affordable livestock to our community while maintaining the highest standards of animal welfare and customer service.</p>
+                        
+                        <h3 data-translate="our_values_title">Our Values</h3>
+                        <ul>
+                            <li data-translate="value_quality"><strong>Quality:</strong> We ensure all our livestock are healthy, vaccinated, and well-cared for.</li>
+                            <li data-translate="value_transparency"><strong>Transparency:</strong> Fair pricing and honest dealings with all our customers.</li>
+                            <li data-translate="value_sustainability"><strong>Sustainability:</strong> We practice responsible farming methods that respect the environment.</li>
+                            <li data-translate="value_community"><strong>Community:</strong> Supporting local food security and economic growth.</li>
+                        </ul>
+                        
+                        <h3 data-translate="what_we_offer_title">What We Offer</h3>
+                        <ul>
+                            <li data-translate="offer_chickens">High-quality chickens (various breeds including broilers, layers, and local breeds)</li>
+                            <li data-translate="offer_goats">Healthy goats (meat breeds including Boer, Alpine, and local varieties)</li>
+                            <li data-translate="offer_health_cert">Health certificates for all livestock</li>
+                            <li data-translate="offer_delivery">Delivery options available</li>
+                            <li data-translate="offer_advice">Expert advice on livestock care</li>
+                        </ul>
+                        
+                        <h3 data-translate="our_location_title">Our Location</h3>
+                        <p data-translate="our_location_text">We are based in Kigali, Rwanda, and serve customers throughout the country. Contact us to arrange a visit to our farm or to discuss your livestock needs.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact Page -->
+        <div id="contactPage" class="page">
+            <div class="container">
+                <h2 style="color: #4A7C4E;" data-translate="contact_title">Contact Us</h2>
+                <div class="contact-layout">
+                    <div class="contact-info">
+                        <h3 data-translate="get_in_touch">Get in Touch</h3>
+                        <div class="contact-item">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                                <circle cx="12" cy="10" r="3"/>
+                            </svg>
+                            <div>
+                                <h4 data-translate="farm_location">Farm Location</h4>
+                                <p data-translate="farm_location_text">Kigali, Rwanda</p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                            </svg>
+                            <div>
+                                <h4 data-translate="phone_label">Phone</h4>
+                                <p data-translate="phone_text">+250 788 000 000</p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                                <polyline points="22,6 12,13 2,6"/>
+                            </svg>
+                            <div>
+                                <h4 data-translate="email_label">Email</h4>
+                                <p data-translate="email_text">info@goldenharvestfarm.com</p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"/>
+                                <polyline points="12 6 12 12 16 14"/>
+                            </svg>
+                            <div>
+                                <h4 data-translate="business_hours_label">Business Hours</h4>
+                                <p data-translate="business_hours_mon">Monday - Friday: 8AM - 6PM</p>
+                                <p data-translate="business_hours_sat">Saturday: 8AM - 4PM</p>
+                                <p data-translate="business_hours_sun">Sunday: Closed</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="contact-form-wrapper">
+                        <h3 data-translate="send_message_title">Send us a Message</h3>
+                        <form id="contactForm" onsubmit="handleContact(event)">
+                            <div class="form-group">
+                                <label data-translate="label_name">Name</label>
+                                <input type="text" name="name" required data-translate-placeholder="placeholder_name" placeholder="Name">
+                            </div>
+                            <div class="form-group">
+                                <label data-translate="label_email">Email</label>
+                                <input type="email" name="email" required data-translate-placeholder="placeholder_email" placeholder="you@example.com">
+                            </div>
+                            <div class="form-group">
+                                <label data-translate="label_phone">Phone</label>
+                                <input type="tel" name="phone" required data-translate-placeholder="placeholder_phone" placeholder="+250 788 000 000">
+                            </div>
+                            <div class="form-group">
+                                <label data-translate="label_subject">Subject</label>
+                                <input type="text" name="subject" required data-translate-placeholder="placeholder_subject" placeholder="Subject">
+                            </div>
+                            <div class="form-group">
+                                <label data-translate="label_message">Message</label>
+                                <textarea name="message" rows="5" required data-translate-placeholder="placeholder_message" placeholder="Your message..."></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary" data-translate="btn_send_message">Send Message</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+       
+<!-- Cart Page -->
+<div id="cartPage" class="page">
+    <div class="container">
+        <h2 style="color: #4A7C4E;" data-translate="cart_title">Shopping Order</h2>
+        <div id="cartContent">
+            <div id="cartItems"></div>
+            <div id="cartSummary" style="display: none;">
+                <div class="cart-summary">
+                    <h3 data-translate="order_summary">Order Summary</h3>
+                    <div class="summary-row">
+                        <span data-translate="label_total_items">Total Items:</span>
+                        <span id="totalItems" data-translate="total_items_value">0</span>
+                    </div>
+                    <div class="summary-row total">
+                        <span data-translate="label_total_price">Total Price:</span>
+                        <span id="totalPrice" data-translate="total_price_value">0 RWF</span>
+                    </div>
+                    
+                    <!-- Checkout Form -->
+                    <div class="checkout-form">
+                        <h4 style="color: #2E5C32; margin: 1.5rem 0 1rem;" data-translate="checkout_info_title">Your Contact Information</h4>
+                        <form id="checkoutForm" onsubmit="proceedToCheckout(event)">
+                            <div class="form-group">
+                                <label data-translate="label_full_name">Full Name <span style="color: red;" data-translate="required_star">*</span></label>
+                                <input type="text" id="checkoutName" placeholder="Enter your name" required data-translate-placeholder="placeholder_full_name">
+                            </div>
+                            <div class="form-group">
+                                <label data-translate="label_phone_number">Phone Number <span style="color: red;" data-translate="required_star">*</span></label>
+                                <input type="tel" id="checkoutPhone" placeholder="+250 788 000 000" required data-translate-placeholder="placeholder_checkout_phone">
+                            </div>
+                            <div class="form-group">
+                                <label data-translate="label_email_address">Email Address</label>
+                                <input type="email" id="checkoutEmail" placeholder="your@email.com" data-translate-placeholder="placeholder_checkout_email">
+                            </div>
+                            <div class="form-group">
+                                <label data-translate="label_delivery_address">Delivery Address (Optional)</label>
+                                <textarea id="checkoutAddress" rows="2" placeholder="Enter delivery address" data-translate-placeholder="placeholder_delivery_address"></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary" data-translate="btn_buy_now">Buy Now</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    </main>
+
+
+    <!-- Toast / Alert Modal -->
+<div id="toastModal" class="toast-modal">
+  <div class="toast-content">
+    <p id="toastMessage" data-translate="toast_message"></p>
+    <button id="toastCloseBtn" data-translate="toast_ok">OK</button>
+  </div>
+</div>
+
+    <!-- Listing Detail Modal -->
+    <div id="listingModal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeModal()" aria-label="Close">×</span>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h3 data-translate="footer_name">Golden Harvest Farm</h3>
+                    <p data-translate="footer_tagline">Farm Fresh. Fairly Traded.</p>
+                </div>
+                <div class="footer-col">
+                    <h4 data-translate="footer_quick_links">Quick Links</h4>
+                    <ul>
+                        <li><a href="#" onclick="showPage('home')" data-translate="nav_home">Home</a></li>
+                        <li><a href="#" onclick="showPage('buy')" data-translate="nav_buy">Buy Livestock</a></li>
+                        <li><a href="#" onclick="showPage('about')" data-translate="nav_about">About Us</a></li>
+                        <li><a href="#" onclick="showPage('contact')" data-translate="nav_contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4 data-translate="footer_contact">Contact</h4>
+                    <p data-translate="footer_phone">Phone: +250 788 000 000</p>
+                    <p data-translate="footer_email">Email: info@goldenharvestfarm.com</p>
+                    <p data-translate="footer_location">Location: Kigali, Rwanda</p>
+                </div>
+                <div class="footer-col">
+                    <h4 data-translate="footer_hours">Business Hours</h4>
+                    <p data-translate="footer_mon">Monday - Friday: 8AM - 6PM</p>
+                    <p data-translate="footer_sat">Saturday: 8AM - 4PM</p>
+                    <p data-translate="footer_sun">Sunday: Closed</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p data-translate="footer_copyright">&copy; 2025 Golden Harvest Farm. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+<script src="translation.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
