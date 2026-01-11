@@ -79,12 +79,12 @@ function showAdminSection(section) {
 async function loadDashboardData() {
     try {
         // Load listings
-        const listingsResponse = await fetch(`${API_URL}/listings`);
+        const listingsResponse = await fetch(`${API_URL}/api/listings`);
         const listingsData = await listingsResponse.json();
         const listings = listingsData.listings || [];
         
         // Load messages
-        const messagesResponse = await fetch(`${API_URL}/admin/messages`, {
+        const messagesResponse = await fetch(`${API_URL}/api/admin/messages`, {
             headers: { 'Authorization': `Bearer ${localStorage.getItem('adminToken')}` }
         });
         const messagesData = await messagesResponse.json();
@@ -153,7 +153,7 @@ function displayRecentListings(listings) {
 // Load all listings
 async function loadAllListings() {
     try {
-        const response = await fetch(`${API_URL}/listings`);
+        const response = await fetch(`${API_URL}/api/listings`);
         const data = await response.json();
         const listings = data.listings || [];
         
@@ -230,7 +230,7 @@ async function handleCreateListing(event) {
     };
     
     try {
-        const response = await fetch(`${API_URL}/admin/listings`, {
+        const response = await fetch(`${API_URL}/api/admin/listings`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -267,7 +267,7 @@ async function deleteListing(listingId) {
     }
     
     try {
-        const response = await fetch(`${API_URL}/admin/listings/${listingId}`, {
+        const response = await fetch(`${API_URL}/api/admin/listings/${listingId}`, {
             method: 'DELETE',
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('adminToken')}`
@@ -290,7 +290,7 @@ async function deleteListing(listingId) {
 // Load messages
 async function loadMessages() {
     try {
-        const response = await fetch(`${API_URL}/admin/messages`, {
+        const response = await fetch(`${API_URL}/api/admin/messages`, {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('adminToken')}`
             }

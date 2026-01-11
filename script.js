@@ -261,7 +261,7 @@ async function handleContact(event) {
     };
     
     try {
-        const response = await fetch(`${API_URL}/contact`, {
+        const response = await fetch(`${API_URL}/api/contact`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data)
@@ -503,7 +503,7 @@ Please contact the customer to confirm this order.`
     };
     
     try {
-        const response = await fetch(`${API_URL}/contact`, {
+        const response = await fetch(`${API_URL}/api/contact`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(message)
