@@ -581,6 +581,32 @@ function updateCartQuantity(listingId, change, hasWeightRange) {
     }
 }
 
+function updateCartQuantityDirect(listingId, value, hasWeightRange) {
+    const cart = getCart();
+    const itemIndex = hasWeightRange ? 
+        cart.findIndex(i => i.id === listingId && i.weightRange) :
+        cart.findIndex(i => i.id === listingId && !i.weightRange);
+    
+    if (itemIndex !== -1) {
+        const newQty = parseInt(value) || 1;
+        
+        if (newQty <= 0) {
+            removeFromCart(itemIndex);
+            return;
+        }
+        
+        if (newQty > cart[itemIndex].maxQuantity) {
+            cart[itemIndex].quantity = cart[itemIndex].maxQuantity;
+            showToast('Maximum available quantity reached!');
+        } else {
+            cart[itemIndex].quantity = newQty;
+        }
+        
+        saveCart(cart);
+        displayCart();
+    }
+}
+
 function removeFromCart(indexOrId) {
     let cart = getCart();
     
@@ -643,12 +669,18 @@ function displayCart() {
                                 <small>Average: ${avgWeight.toFixed(1)} kg | Total: ${totalWeight.toFixed(1)} kg for ${item.quantity} ${item.animalType.toLowerCase()}(s)</small>
                             </div>
                         ` : ''}
-                        <div class="cart-item-controls">
-                            <div class="quantity-control">
-                                <button class="quantity-btn" onclick="updateCartQuantity('${item.id}', -1, ${!!item.weightRange})">-</button>
-                                <span class="quantity-display">${item.quantity}</span>
-                                <button class="quantity-btn" onclick="updateCartQuantity('${item.id}', 1, ${!!item.weightRange})">+</button>
+                        <div style="margin: 10px 0; padding: 10px; background: #f0f0f0; border-radius: 6px;">
+                            <label style="display: block; margin-bottom: 5px; font-weight: 600;">Number of ${item.animalType}(s) to buy:</label>
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <button class="quantity-btn" onclick="updateCartQuantity('${item.id}', -1, ${!!item.weightRange})" style="width: 35px; height: 35px; font-size: 18px;">-</button>
+                                <input type="number" value="${item.quantity}" min="1" max="${item.maxQuantity}" 
+                                       onchange="updateCartQuantityDirect('${item.id}', this.value, ${!!item.weightRange})"
+                                       style="width: 70px; text-align: center; padding: 5px; border: 1px solid #ddd; border-radius: 4px;">
+                                <button class="quantity-btn" onclick="updateCartQuantity('${item.id}', 1, ${!!item.weightRange})" style="width: 35px; height: 35px; font-size: 18px;">+</button>
+                                <span style="color: #666; font-size: 0.9em;">/ ${item.maxQuantity} available</span>
                             </div>
+                        </div>
+                        <div class="cart-item-controls">
                             <span class="cart-item-price">${(item.pricePerUnit * item.quantity).toLocaleString()} RWF</span>
                             <button class="remove-btn" onclick="removeFromCart(${index})">Remove</button>
                         </div>
