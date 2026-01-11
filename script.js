@@ -607,6 +607,111 @@ function updateCartQuantityDirect(listingId, value, hasWeightRange) {
     }
 }
 
+function addWeightRange(itemIndex) {
+    const cart = getCart();
+    const item = cart[itemIndex];
+    
+    showWeightRangeModal(item, itemIndex);
+}
+
+function editWeightRange(itemIndex) {
+    const cart = getCart();
+    const item = cart[itemIndex];
+    
+    showWeightRangeModal(item, itemIndex, true);
+}
+
+function showWeightRangeModal(item, itemIndex, isEdit = false) {
+    const weightPerUnit = item.weightRange?.avgPerUnit || 2.0;
+    
+    const modal = document.createElement('div');
+    modal.className = 'modal-overlay';
+    modal.innerHTML = `
+        <div class="modal-content">
+            <button class="modal-close" onclick="this.closest('.modal-overlay').remove()">×</button>
+            <h2>${isEdit ? 'Edit' : 'Add'} Weight Range Preference</h2>
+            <div style="display: flex; gap: 15px; padding: 15px; background: #f8f9fa; border-radius: 8px; margin-bottom: 20px;">
+                <img src="${item.image}" alt="${item.breed}" style="width: 80px; height: 80px; object-fit: cover; border-radius: 8px;">
+                <div>
+                    <h3>${item.breed}</h3>
+                    <p>${item.animalType}</p>
+                </div>
+            </div>
+            
+            <form id="weightRangeForm">
+                <div class="form-group">
+                    <label>Minimum Weight per ${item.animalType.toLowerCase()} (kg)</label>
+                    <input type="number" id="modalMinWeight" step="0.1" min="0" 
+                           value="${item.weightRange?.min || 2}" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Maximum Weight per ${item.animalType.toLowerCase()} (kg)</label>
+                    <input type="number" id="modalMaxWeight" step="0.1" min="0" 
+                           value="${item.weightRange?.max || 5}" required>
+                </div>
+                
+                <div style="background: #e8f5e9; padding: 15px; border-radius: 8px; margin: 20px 0;">
+                    <p id="modalWeightSummary"></p>
+                </div>
+                
+                <button type="submit" class="btn btn-primary btn-block">Save Weight Range</button>
+            </form>
+        </div>
+    `;
+    
+    document.body.appendChild(modal);
+    
+    const minInput = modal.querySelector('#modalMinWeight');
+    const maxInput = modal.querySelector('#modalMaxWeight');
+    
+    function updateModalSummary() {
+        const min = parseFloat(minInput.value) || 0;
+        const max = parseFloat(maxInput.value) || 0;
+        const avg = (min + max) / 2;
+        const total = avg * item.quantity;
+        
+        if (min >= max) {
+            document.getElementById('modalWeightSummary').innerHTML = 
+                '<span style="color: #dc3545;">Maximum weight must be greater than minimum weight</span>';
+        } else {
+            document.getElementById('modalWeightSummary').innerHTML = `
+                <strong>Weight Range:</strong> ${min} - ${max} kg per ${item.animalType.toLowerCase()}<br>
+                <strong>Average:</strong> ${avg.toFixed(1)} kg per animal<br>
+                <strong>Total for ${item.quantity} ${item.animalType.toLowerCase()}(s):</strong> ${total.toFixed(1)} kg
+            `;
+        }
+    }
+    
+    minInput.addEventListener('input', updateModalSummary);
+    maxInput.addEventListener('input', updateModalSummary);
+    updateModalSummary();
+    
+    modal.querySelector('#weightRangeForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        
+        const min = parseFloat(minInput.value);
+        const max = parseFloat(maxInput.value);
+        
+        if (min >= max) {
+            showToast('Maximum weight must be greater than minimum weight!');
+            return;
+        }
+        
+        const cart = getCart();
+        cart[itemIndex].weightRange = {
+            min: min,
+            max: max,
+            avgPerUnit: (min + max) / 2
+        };
+        
+        saveCart(cart);
+        displayCart();
+        modal.remove();
+        showToast('Weight range ' + (isEdit ? 'updated' : 'added') + ' successfully!');
+    });
+}
+
 function removeFromCart(indexOrId) {
     let cart = getCart();
     
@@ -665,10 +770,18 @@ function displayCart() {
                         <p class="cart-item-info">Price per unit: ${item.pricePerUnit.toLocaleString()} RWF</p>
                         ${item.weightRange ? `
                             <div style="background: #fff3cd; padding: 10px; border-radius: 6px; margin: 10px 0; font-size: 0.9em;">
-                                <strong>⚖️ Weight Range:</strong> ${item.weightRange.min} - ${item.weightRange.max} kg per ${item.animalType.toLowerCase()}<br>
-                                <small>Average: ${avgWeight.toFixed(1)} kg | Total: ${totalWeight.toFixed(1)} kg for ${item.quantity} ${item.animalType.toLowerCase()}(s)</small>
+                                <strong>⚖️ Weight Range Selected:</strong> ${item.weightRange.min} - ${item.weightRange.max} kg per ${item.animalType.toLowerCase()}<br>
+                                <small>Average: ${avgWeight.toFixed(1)} kg per animal | Total: ${totalWeight.toFixed(1)} kg for ${item.quantity} ${item.animalType.toLowerCase()}(s)</small>
+                                <button onclick="editWeightRange(${index})" style="margin-top: 8px; padding: 5px 10px; background: #4A7C4E; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 0.85em;">Change Weight Range</button>
                             </div>
-                        ` : ''}
+                        ` : `
+                            <div style="margin: 10px 0; padding: 10px; background: #e3f2fd; border-radius: 6px;">
+                                <button onclick="addWeightRange(${index})" style="padding: 8px 15px; background: #2196F3; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 0.9em; width: 100%;">
+                                    ⚖️ Add Weight Range Preference
+                                </button>
+                                <small style="display: block; margin-top: 5px; color: #666;">Optional: Specify weight range for each animal</small>
+                            </div>
+                        `}
                         <div style="margin: 10px 0; padding: 10px; background: #f0f0f0; border-radius: 6px;">
                             <label style="display: block; margin-bottom: 5px; font-weight: 600;">Number of ${item.animalType}(s) to buy:</label>
                             <div style="display: flex; align-items: center; gap: 10px;">
