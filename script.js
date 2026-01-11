@@ -52,6 +52,7 @@ async function loadListings() {
         if (response.ok) {
             allListings = data.listings;
             displayListings(allListings);
+            populateAnimalTypeFilter();
             displayHomeListings();
         }
     } catch (error) {
@@ -124,35 +125,46 @@ function displayHomeListings() {
 function applyFilters() {
     if (!allListings || allListings.length === 0) return;
 
+    // Update current filters
     currentFilters.animalType = document.getElementById('filterAnimalType').value;
     currentFilters.breed = document.getElementById('filterBreed').value.toLowerCase().trim();
     currentFilters.minPrice = parseInt(document.getElementById('filterMinPrice').value || 0);
     currentFilters.maxPrice = parseInt(document.getElementById('filterMaxPrice').value || 1000000);
     currentFilters.location = document.getElementById('filterLocation').value.toLowerCase().trim();
+    currentFilters.minWeight = parseFloat(document.getElementById('filterMinWeight').value || 0);
+    currentFilters.maxWeight = parseFloat(document.getElementById('filterMaxWeight').value || 100);
 
     let filtered = allListings;
 
-    // Filter by animal type (case-insensitive)
+    // Animal type filter (case-insensitive)
     if (currentFilters.animalType !== 'all') {
         filtered = filtered.filter(l => l.animalType.toLowerCase() === currentFilters.animalType.toLowerCase());
     }
 
-    // Filter by breed
+    // Breed filter
     if (currentFilters.breed) {
         filtered = filtered.filter(l => l.breed.toLowerCase().includes(currentFilters.breed));
     }
 
-    // Filter by price range
-    filtered = filtered.filter(l => 
-        Number(l.pricePerUnit) >= currentFilters.minPrice &&
-        Number(l.pricePerUnit) <= currentFilters.maxPrice
-    );
+    // Price filter
+    filtered = filtered.filter(l => Number(l.pricePerUnit) >= currentFilters.minPrice &&
+                                    Number(l.pricePerUnit) <= currentFilters.maxPrice);
 
-    // Filter by location
+    // Location filter
     if (currentFilters.location) {
         filtered = filtered.filter(l => l.location.toLowerCase().includes(currentFilters.location));
     }
 
+    // Weight filter (only for chickens)
+    filtered = filtered.filter(l => {
+        if (l.animalType.toLowerCase() === 'chicken' && l.weightPerChicken) {
+            return Number(l.weightPerChicken) >= currentFilters.minWeight &&
+                   Number(l.weightPerChicken) <= currentFilters.maxWeight;
+        }
+        return true; // goats or listings without weight are included
+    });
+
+    // Display filtered listings
     displayListings(filtered);
 
     // Show results count
@@ -168,7 +180,27 @@ function applyFilters() {
 }
 
 
-// Clear Filters
+
+function populateAnimalTypeFilter() {
+    const select = document.getElementById('filterAnimalType');
+    if (!select || !allListings) return;
+
+    // Get unique animal types from listings
+    const types = [...new Set(allListings.map(l => l.animalType.toLowerCase()))];
+
+    // Clear existing options except "all"
+    select.innerHTML = '<option value="all">All Animals</option>';
+
+    types.forEach(type => {
+        const option = document.createElement('option');
+        option.value = type;
+        option.textContent = type.charAt(0).toUpperCase() + type.slice(1);
+        select.appendChild(option);
+    });
+}
+
+
+
 // Clear Filters
 function clearFilters() {
     document.getElementById('filterAnimalType').value = 'all';
@@ -176,17 +208,22 @@ function clearFilters() {
     document.getElementById('filterMinPrice').value = '';
     document.getElementById('filterMaxPrice').value = '';
     document.getElementById('filterLocation').value = '';
-    
+    document.getElementById('filterMinWeight').value = '';
+    document.getElementById('filterMaxWeight').value = '';
+
     currentFilters = {
         animalType: 'all',
         breed: '',
         minPrice: 0,
         maxPrice: 1000000,
-        location: ''
+        location: '',
+        minWeight: 0,
+        maxWeight: 100
     };
-    
+
     displayListings(allListings);
 }
+
 
 // Show Listing Detail
 function showListingDetail(listingId) {
