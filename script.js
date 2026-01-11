@@ -344,7 +344,7 @@ function showToast(message) {
     };
 }
 
-// Cart Management
+// Cart Management with Weight-Based Ordering
 function initCart() {
     updateCartCount();
 }
@@ -372,8 +372,15 @@ function addToCart(listingId) {
     const listing = allListings.find(l => l._id === listingId);
     if (!listing) return;
     
+    // Show weight selection modal if weight per unit is available
+    if (listing.weightPerChicken || listing.weightPerGoat || listing.weightPerCow) {
+        showWeightSelectionModal(listing);
+        return;
+    }
+    
+    // Standard cart addition for listings without weight
     const cart = getCart();
-    const existingItem = cart.find(item => item.id === listingId);
+    const existingItem = cart.find(item => item.id === listingId && !item.weightRange);
     
     if (existingItem) {
         if (existingItem.quantity < listing.quantity) {
@@ -401,20 +408,171 @@ function addToCart(listingId) {
     saveCart(cart);
 }
 
-function updateCartQuantity(listingId, change) {
-    const cart = getCart();
-    const item = cart.find(i => i.id === listingId);
+function showWeightSelectionModal(listing) {
+    const weightPerUnit = listing.weightPerChicken || listing.weightPerGoat || listing.weightPerCow;
+    const unitName = listing.animalType.toLowerCase();
     
-    if (item) {
-        item.quantity += change;
+    const modal = document.createElement('div');
+    modal.className = 'modal-overlay';
+    modal.innerHTML = `
+        <div class="modal-content weight-selection-modal">
+            <button class="modal-close" onclick="this.closest('.modal-overlay').remove()">×</button>
+            <h2>Select Weight Range</h2>
+            <div class="listing-preview">
+                <img src="${listing.image}" alt="${listing.breed}">
+                <div>
+                    <h3>${listing.breed}</h3>
+                    <p>${listing.animalType} - ${listing.location}</p>
+                    <p><strong>Average weight per ${unitName}: ${weightPerUnit} kg</strong></p>
+                    <p>Price per unit: ${listing.pricePerUnit.toLocaleString()} RWF</p>
+                </div>
+            </div>
+            
+            <form id="weightSelectionForm">
+                <div class="form-group">
+                    <label>Minimum Weight (kg)</label>
+                    <input type="number" id="minWeight" step="0.1" min="0" max="${weightPerUnit * 1.5}" 
+                           value="${(weightPerUnit * 0.8).toFixed(1)}" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Maximum Weight (kg)</label>
+                    <input type="number" id="maxWeight" step="0.1" min="0" max="${weightPerUnit * 2}" 
+                           value="${(weightPerUnit * 1.2).toFixed(1)}" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Quantity</label>
+                    <div class="quantity-selector">
+                        <button type="button" onclick="adjustQuantity(-1)">-</button>
+                        <input type="number" id="weightQuantity" value="1" min="1" max="${listing.quantity}" required>
+                        <button type="button" onclick="adjustQuantity(1)">+</button>
+                    </div>
+                    <small>Available: ${listing.quantity} ${unitName}(s)</small>
+                </div>
+                
+                <div class="weight-info-box">
+                    <h4>Selection Summary</h4>
+                    <p id="weightSummary">Select weight range and quantity</p>
+                    <p id="estimatedPrice" class="price-highlight"></p>
+                </div>
+                
+                <button type="submit" class="btn btn-primary btn-block">Add to Cart</button>
+            </form>
+        </div>
+    `;
+    
+    document.body.appendChild(modal);
+    
+    // Update summary on input change
+    const minWeightInput = modal.querySelector('#minWeight');
+    const maxWeightInput = modal.querySelector('#maxWeight');
+    const quantityInput = modal.querySelector('#weightQuantity');
+    
+    function updateSummary() {
+        const minWeight = parseFloat(minWeightInput.value) || 0;
+        const maxWeight = parseFloat(maxWeightInput.value) || 0;
+        const quantity = parseInt(quantityInput.value) || 1;
         
-        if (item.quantity <= 0) {
-            removeFromCart(listingId);
+        if (minWeight >= maxWeight) {
+            document.getElementById('weightSummary').innerHTML = 
+                '<span style="color: #dc3545;">Maximum weight must be greater than minimum weight</span>';
+            document.getElementById('estimatedPrice').textContent = '';
             return;
         }
         
-        if (item.quantity > item.maxQuantity) {
-            item.quantity = item.maxQuantity;
+        const avgWeight = (minWeight + maxWeight) / 2;
+        const totalWeight = avgWeight * quantity;
+        const estimatedPrice = listing.pricePerUnit * quantity;
+        
+        document.getElementById('weightSummary').innerHTML = `
+            ${quantity} ${unitName}(s) with weight between ${minWeight} - ${maxWeight} kg<br>
+            <small>Average: ${avgWeight.toFixed(1)} kg per ${unitName}, Total: ${totalWeight.toFixed(1)} kg</small>
+        `;
+        document.getElementById('estimatedPrice').textContent = 
+            `Estimated Total: ${estimatedPrice.toLocaleString()} RWF`;
+    }
+    
+    minWeightInput.addEventListener('input', updateSummary);
+    maxWeightInput.addEventListener('input', updateSummary);
+    quantityInput.addEventListener('input', updateSummary);
+    updateSummary();
+    
+    // Handle form submission
+    modal.querySelector('#weightSelectionForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        
+        const minWeight = parseFloat(minWeightInput.value);
+        const maxWeight = parseFloat(maxWeightInput.value);
+        const quantity = parseInt(quantityInput.value);
+        
+        if (minWeight >= maxWeight) {
+            showToast('Maximum weight must be greater than minimum weight!');
+            return;
+        }
+        
+        if (quantity > listing.quantity) {
+            showToast('Quantity exceeds available stock!');
+            return;
+        }
+        
+        addToCartWithWeight(listing, minWeight, maxWeight, quantity);
+        modal.remove();
+    });
+}
+
+function adjustQuantity(change) {
+    const input = document.getElementById('weightQuantity');
+    const max = parseInt(input.max);
+    const newValue = parseInt(input.value) + change;
+    
+    if (newValue >= 1 && newValue <= max) {
+        input.value = newValue;
+        input.dispatchEvent(new Event('input'));
+    }
+}
+
+function addToCartWithWeight(listing, minWeight, maxWeight, quantity) {
+    const cart = getCart();
+    const weightPerUnit = listing.weightPerChicken || listing.weightPerGoat || listing.weightPerCow;
+    
+    cart.push({
+        id: listing._id,
+        breed: listing.breed,
+        animalType: listing.animalType,
+        pricePerUnit: listing.pricePerUnit,
+        image: listing.image,
+        maxQuantity: listing.quantity,
+        quantity: quantity,
+        location: listing.location,
+        phone: listing.phone || '+250 788 000 000',
+        weightRange: {
+            min: minWeight,
+            max: maxWeight,
+            avgPerUnit: weightPerUnit
+        }
+    });
+    
+    saveCart(cart);
+    showToast(`Added ${quantity} ${listing.animalType.toLowerCase()}(s) with weight ${minWeight}-${maxWeight} kg to cart!`);
+}
+
+function updateCartQuantity(listingId, change, hasWeightRange) {
+    const cart = getCart();
+    const itemIndex = hasWeightRange ? 
+        cart.findIndex(i => i.id === listingId && i.weightRange) :
+        cart.findIndex(i => i.id === listingId && !i.weightRange);
+    
+    if (itemIndex !== -1) {
+        cart[itemIndex].quantity += change;
+        
+        if (cart[itemIndex].quantity <= 0) {
+            removeFromCart(itemIndex);
+            return;
+        }
+        
+        if (cart[itemIndex].quantity > cart[itemIndex].maxQuantity) {
+            cart[itemIndex].quantity = cart[itemIndex].maxQuantity;
             showToast('Maximum available quantity reached!');
         }
         
@@ -423,9 +581,15 @@ function updateCartQuantity(listingId, change) {
     }
 }
 
-function removeFromCart(listingId) {
+function removeFromCart(indexOrId) {
     let cart = getCart();
-    cart = cart.filter(item => item.id !== listingId);
+    
+    if (typeof indexOrId === 'number') {
+        cart.splice(indexOrId, 1);
+    } else {
+        cart = cart.filter(item => item.id !== indexOrId);
+    }
+    
     saveCart(cart);
     displayCart();
     showToast('Item removed from cart');
@@ -458,7 +622,12 @@ function displayCart() {
     
     cartContent.innerHTML = `
         <div class="cart-items-list">
-            ${cart.map(item => `
+            ${cart.map((item, index) => {
+                const avgWeight = item.weightRange ? 
+                    (item.weightRange.min + item.weightRange.max) / 2 : null;
+                const totalWeight = avgWeight ? avgWeight * item.quantity : null;
+                
+                return `
                 <div class="cart-item">
                     <img src="${item.image}" alt="${item.breed}" class="cart-item-image">
                     <div class="cart-item-details">
@@ -467,19 +636,25 @@ function displayCart() {
                             <span class="listing-badge">${item.animalType}</span>
                             <br>📍 ${item.location}
                         </p>
+                        ${item.weightRange ? `
+                            <div class="weight-info">
+                                <strong>⚖️ Weight Range:</strong> ${item.weightRange.min} - ${item.weightRange.max} kg per ${item.animalType.toLowerCase()}<br>
+                                <small>Average: ${avgWeight.toFixed(1)} kg | Total: ${totalWeight.toFixed(1)} kg for ${item.quantity} ${item.animalType.toLowerCase()}(s)</small>
+                            </div>
+                        ` : ''}
                         <p class="cart-item-info">Price per unit: ${item.pricePerUnit.toLocaleString()} RWF</p>
                         <div class="cart-item-controls">
                             <div class="quantity-control">
-                                <button class="quantity-btn" onclick="updateCartQuantity('${item.id}', -1)">-</button>
+                                <button class="quantity-btn" onclick="updateCartQuantity('${item.id}', -1, ${!!item.weightRange})">-</button>
                                 <span class="quantity-display">${item.quantity}</span>
-                                <button class="quantity-btn" onclick="updateCartQuantity('${item.id}', 1)">+</button>
+                                <button class="quantity-btn" onclick="updateCartQuantity('${item.id}', 1, ${!!item.weightRange})">+</button>
                             </div>
                             <span class="cart-item-price">${(item.pricePerUnit * item.quantity).toLocaleString()} RWF</span>
-                            <button class="remove-btn" onclick="removeFromCart('${item.id}')">Remove</button>
+                            <button class="remove-btn" onclick="removeFromCart(${index})">Remove</button>
                         </div>
                     </div>
                 </div>
-            `).join('')}
+            `}).join('')}
         </div>
     `;
     
@@ -498,7 +673,6 @@ async function proceedToCheckout(event) {
         return;
     }
     
-    // Get customer details from form
     const customerName = document.getElementById('checkoutName').value.trim();
     const customerPhone = document.getElementById('checkoutPhone').value.trim();
     const customerEmail = document.getElementById('checkoutEmail').value.trim();
@@ -510,9 +684,19 @@ async function proceedToCheckout(event) {
     }
     
     const totalPrice = cart.reduce((sum, item) => sum + (item.pricePerUnit * item.quantity), 0);
-    const orderDetails = cart.map(item => 
-        `${item.quantity}x ${item.breed} (${item.animalType}) - ${(item.pricePerUnit * item.quantity).toLocaleString()} RWF`
-    ).join('\n');
+    const orderDetails = cart.map(item => {
+        let details = `${item.quantity}x ${item.breed} (${item.animalType})`;
+        
+        if (item.weightRange) {
+            const avgWeight = (item.weightRange.min + item.weightRange.max) / 2;
+            const totalWeight = avgWeight * item.quantity;
+            details += `\n   Weight Range: ${item.weightRange.min}-${item.weightRange.max} kg per animal`;
+            details += `\n   Total Weight: ${totalWeight.toFixed(1)} kg`;
+        }
+        
+        details += `\n   Price: ${(item.pricePerUnit * item.quantity).toLocaleString()} RWF`;
+        return details;
+    }).join('\n\n');
     
     const message = {
         name: customerName,
