@@ -1194,3 +1194,71 @@ body {
 .lang-switcher:active{
     border: 1px solid #ccc !important;
 }
+
+
+
+
+
+.weight-selection-modal {
+    max-width: 500px;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.listing-preview {
+    display: flex;
+    gap: 15px;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.listing-preview img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.quantity-selector {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.quantity-selector button {
+    width: 35px;
+    height: 35px;
+    border: 1px solid #ddd;
+    background: white;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.quantity-selector input {
+    width: 60px;
+    text-align: center;
+}
+
+.weight-info-box {
+    background: #e8f5e9;
+    padding: 15px;
+    border-radius: 8px;
+    margin: 20px 0;
+}
+
+.weight-info {
+    background: #fff3cd;
+    padding: 10px;
+    border-radius: 6px;
+    margin: 10px 0;
+    font-size: 0.9em;
+}
+
+.price-highlight {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #2e7d32;
+    margin-top: 10px;
+}
