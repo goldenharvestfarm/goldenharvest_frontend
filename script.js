@@ -344,7 +344,7 @@ function showToast(message) {
     };
 }
 
-// Cart Management with Weight-Based Ordering
+// Cart Management 
 function initCart() {
     updateCartCount();
 }
@@ -624,11 +624,16 @@ function editWeightRange(itemIndex) {
 function showWeightRangeModal(item, itemIndex, isEdit = false) {
     const weightPerUnit = item.weightRange?.avgPerUnit || 2.0;
     
+    // Remove existing modal if any
+    const existingModal = document.querySelector('.modal-overlay');
+    if (existingModal) existingModal.remove();
+    
     const modal = document.createElement('div');
     modal.className = 'modal-overlay';
+    modal.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 1000;';
     modal.innerHTML = `
-        <div class="modal-content">
-            <button class="modal-close" onclick="this.closest('.modal-overlay').remove()">×</button>
+        <div class="modal-content" style="background: white; padding: 30px; border-radius: 12px; max-width: 500px; width: 90%; max-height: 90vh; overflow-y: auto; position: relative;">
+            <button class="modal-close" onclick="this.closest('.modal-overlay').remove()" style="position: absolute; top: 15px; right: 15px; background: none; border: none; font-size: 28px; cursor: pointer; color: #666;">×</button>
             <h2>${isEdit ? 'Edit' : 'Add'} Weight Range Preference</h2>
             <div style="display: flex; gap: 15px; padding: 15px; background: #f8f9fa; border-radius: 8px; margin-bottom: 20px;">
                 <img src="${item.image}" alt="${item.breed}" style="width: 80px; height: 80px; object-fit: cover; border-radius: 8px;">
@@ -639,23 +644,25 @@ function showWeightRangeModal(item, itemIndex, isEdit = false) {
             </div>
             
             <form id="weightRangeForm">
-                <div class="form-group">
-                    <label>Minimum Weight per ${item.animalType.toLowerCase()} (kg)</label>
+                <div class="form-group" style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #333;">Minimum Weight per ${item.animalType.toLowerCase()} (kg)</label>
                     <input type="number" id="modalMinWeight" step="0.1" min="0" 
-                           value="${item.weightRange?.min || 2}" required>
+                           value="${item.weightRange?.min || 2}" required 
+                           style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 16px;">
                 </div>
                 
-                <div class="form-group">
-                    <label>Maximum Weight per ${item.animalType.toLowerCase()} (kg)</label>
+                <div class="form-group" style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #333;">Maximum Weight per ${item.animalType.toLowerCase()} (kg)</label>
                     <input type="number" id="modalMaxWeight" step="0.1" min="0" 
-                           value="${item.weightRange?.max || 5}" required>
+                           value="${item.weightRange?.max || 5}" required 
+                           style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 16px;">
                 </div>
                 
                 <div style="background: #e8f5e9; padding: 15px; border-radius: 8px; margin: 20px 0;">
-                    <p id="modalWeightSummary"></p>
+                    <p id="modalWeightSummary" style="margin: 0; line-height: 1.6;"></p>
                 </div>
                 
-                <button type="submit" class="btn btn-primary btn-block">Save Weight Range</button>
+                <button type="submit" class="btn btn-primary btn-block" style="width: 100%; padding: 12px; background: #4A7C4E; color: white; border: none; border-radius: 6px; font-size: 16px; cursor: pointer; font-weight: 600;">Save Weight Range</button>
             </form>
         </div>
     `;
