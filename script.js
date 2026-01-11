@@ -415,11 +415,11 @@ function showWeightSelectionModal(listing) {
     const modal = document.createElement('div');
     modal.className = 'modal-overlay';
     modal.innerHTML = `
-        <div class="modal-content weight-selection-modal">
+        <div class="modal-content">
             <button class="modal-close" onclick="this.closest('.modal-overlay').remove()">×</button>
             <h2>Select Weight Range</h2>
-            <div class="listing-preview">
-                <img src="${listing.image}" alt="${listing.breed}">
+            <div style="display: flex; gap: 15px; padding: 15px; background: #f8f9fa; border-radius: 8px; margin-bottom: 20px;">
+                <img src="${listing.image}" alt="${listing.breed}" style="width: 100px; height: 100px; object-fit: cover; border-radius: 8px;">
                 <div>
                     <h3>${listing.breed}</h3>
                     <p>${listing.animalType} - ${listing.location}</p>
@@ -443,18 +443,18 @@ function showWeightSelectionModal(listing) {
                 
                 <div class="form-group">
                     <label>Quantity</label>
-                    <div class="quantity-selector">
-                        <button type="button" onclick="adjustQuantity(-1)">-</button>
-                        <input type="number" id="weightQuantity" value="1" min="1" max="${listing.quantity}" required>
-                        <button type="button" onclick="adjustQuantity(1)">+</button>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <button type="button" onclick="adjustQuantity(-1)" style="width: 35px; height: 35px;">-</button>
+                        <input type="number" id="weightQuantity" value="1" min="1" max="${listing.quantity}" required style="width: 60px; text-align: center;">
+                        <button type="button" onclick="adjustQuantity(1)" style="width: 35px; height: 35px;">+</button>
                     </div>
                     <small>Available: ${listing.quantity} ${unitName}(s)</small>
                 </div>
                 
-                <div class="weight-info-box">
+                <div style="background: #e8f5e9; padding: 15px; border-radius: 8px; margin: 20px 0;">
                     <h4>Selection Summary</h4>
                     <p id="weightSummary">Select weight range and quantity</p>
-                    <p id="estimatedPrice" class="price-highlight"></p>
+                    <p id="estimatedPrice" style="font-size: 1.2em; font-weight: bold; color: #2e7d32; margin-top: 10px;"></p>
                 </div>
                 
                 <button type="submit" class="btn btn-primary btn-block">Add to Cart</button>
@@ -636,13 +636,13 @@ function displayCart() {
                             <span class="listing-badge">${item.animalType}</span>
                             <br>📍 ${item.location}
                         </p>
+                        <p class="cart-item-info">Price per unit: ${item.pricePerUnit.toLocaleString()} RWF</p>
                         ${item.weightRange ? `
-                            <div class="weight-info">
+                            <div style="background: #fff3cd; padding: 10px; border-radius: 6px; margin: 10px 0; font-size: 0.9em;">
                                 <strong>⚖️ Weight Range:</strong> ${item.weightRange.min} - ${item.weightRange.max} kg per ${item.animalType.toLowerCase()}<br>
                                 <small>Average: ${avgWeight.toFixed(1)} kg | Total: ${totalWeight.toFixed(1)} kg for ${item.quantity} ${item.animalType.toLowerCase()}(s)</small>
                             </div>
                         ` : ''}
-                        <p class="cart-item-info">Price per unit: ${item.pricePerUnit.toLocaleString()} RWF</p>
                         <div class="cart-item-controls">
                             <div class="quantity-control">
                                 <button class="quantity-btn" onclick="updateCartQuantity('${item.id}', -1, ${!!item.weightRange})">-</button>
