@@ -181,6 +181,7 @@ function displayAllListings(listings) {
                     <th>Breed</th>
                     <th>Quantity</th>
                     <th>Price</th>
+                    <th>Weight (KG)</th>
                     <th>Location</th>
                     <th>Health Status</th>
                     <th>Status</th>
@@ -195,6 +196,7 @@ function displayAllListings(listings) {
                         <td>${listing.breed}</td>
                         <td>${listing.quantity}</td>
                         <td>${listing.pricePerUnit.toLocaleString()} RWF</td>
+                        <td>${listing.weightPerChicken}</td>
                         <td>${listing.location}</td>
                         <td>${listing.healthStatus}</td>
                         <td>${listing.status}</td>
@@ -217,17 +219,18 @@ async function handleCreateListing(event) {
     
     const formData = new FormData(event.target);
     const data = {
-        animalType: formData.get('animalType'),
-        breed: formData.get('breed'),
-        quantity: parseInt(formData.get('quantity')),
-        pricePerUnit: parseInt(formData.get('pricePerUnit')),
-        description: formData.get('description'),
-        image: formData.get('image'),
-        healthStatus: formData.get('healthStatus'),
-        location: formData.get('location'),
-        phone: formData.get('phone'),
-        contactMethod: 'Phone'
-    };
+    animalType: formData.get('animalType'),
+    breed: formData.get('breed'),
+    quantity: parseInt(formData.get('quantity')),
+    pricePerUnit: parseInt(formData.get('pricePerUnit')),
+    weightPerChicken: parseFloat(formData.get('weightPerChicken')), // ← NEW
+    description: formData.get('description'),
+    image: formData.get('image'),
+    healthStatus: formData.get('healthStatus'),
+    location: formData.get('location'),
+    phone: formData.get('phone'),
+    contactMethod: 'Phone'
+};
     
     try {
         const response = await fetch(`${API_URL}/api/admin/listings`, {
