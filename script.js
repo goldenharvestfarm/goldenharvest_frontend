@@ -121,43 +121,40 @@ function displayHomeListings() {
 }
 
 // Apply Filters
-// Apply Filters
 function applyFilters() {
+    if (!allListings || allListings.length === 0) return;
+
     currentFilters.animalType = document.getElementById('filterAnimalType').value;
     currentFilters.breed = document.getElementById('filterBreed').value.toLowerCase().trim();
     currentFilters.minPrice = parseInt(document.getElementById('filterMinPrice').value || 0);
     currentFilters.maxPrice = parseInt(document.getElementById('filterMaxPrice').value || 1000000);
     currentFilters.location = document.getElementById('filterLocation').value.toLowerCase().trim();
-    
+
     let filtered = allListings;
-    
-    // Filter by animal type
+
+    // Filter by animal type (case-insensitive)
     if (currentFilters.animalType !== 'all') {
-        filtered = filtered.filter(l => l.animalType === currentFilters.animalType);
+        filtered = filtered.filter(l => l.animalType.toLowerCase() === currentFilters.animalType.toLowerCase());
     }
-    
-    // Filter by breed/variety
+
+    // Filter by breed
     if (currentFilters.breed) {
-        filtered = filtered.filter(l => 
-            l.breed.toLowerCase().includes(currentFilters.breed)
-        );
+        filtered = filtered.filter(l => l.breed.toLowerCase().includes(currentFilters.breed));
     }
-    
+
     // Filter by price range
     filtered = filtered.filter(l => 
-        l.pricePerUnit >= currentFilters.minPrice && 
-        l.pricePerUnit <= currentFilters.maxPrice
+        Number(l.pricePerUnit) >= currentFilters.minPrice &&
+        Number(l.pricePerUnit) <= currentFilters.maxPrice
     );
-    
+
     // Filter by location
     if (currentFilters.location) {
-        filtered = filtered.filter(l => 
-            l.location.toLowerCase().includes(currentFilters.location)
-        );
+        filtered = filtered.filter(l => l.location.toLowerCase().includes(currentFilters.location));
     }
-    
+
     displayListings(filtered);
-    
+
     // Show results count
     const resultsCount = filtered.length;
     const grid = document.getElementById('listingsGrid');
@@ -169,6 +166,7 @@ function applyFilters() {
         setTimeout(() => countMsg.remove(), 3000);
     }
 }
+
 
 // Clear Filters
 // Clear Filters
