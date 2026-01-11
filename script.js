@@ -46,7 +46,7 @@ function toggleMobileMenu() {
 // Load Listings
 async function loadListings() {
     try {
-        const response = await fetch(`${API_URL}/listings`);
+        const response = await fetch(`${API_URL}/api/listings`);
         const data = await response.json();
         
         if (response.ok) {
