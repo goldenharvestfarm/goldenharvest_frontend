@@ -2,7 +2,6 @@
 const API_URL = 'https://goldenharvest-backend.onrender.com';
 
 // Global State
-// Global State
 let allListings = [];
 let currentFilters = {
     animalType: 'all',
@@ -15,6 +14,7 @@ let currentFilters = {
 // Initialize App
 document.addEventListener('DOMContentLoaded', () => {
     loadListings();
+    initCart();
 });
 
 // Page Navigation
@@ -121,18 +121,23 @@ function displayHomeListings() {
     `).join('');
 }
 
-// Apply Filters
+// Apply Filters - FIXED VERSION
 function applyFilters() {
     if (!allListings || allListings.length === 0) return;
 
-    // Update current filters
-    currentFilters.animalType = document.getElementById('filterAnimalType').value;
-    currentFilters.breed = document.getElementById('filterBreed').value.toLowerCase().trim();
-    currentFilters.minPrice = parseInt(document.getElementById('filterMinPrice').value || 0);
-    currentFilters.maxPrice = parseInt(document.getElementById('filterMaxPrice').value || 1000000);
-    currentFilters.location = document.getElementById('filterLocation').value.toLowerCase().trim();
-    currentFilters.minWeight = parseFloat(document.getElementById('filterMinWeight').value || 0);
-    currentFilters.maxWeight = parseFloat(document.getElementById('filterMaxWeight').value || 100);
+    // Get filter elements and check if they exist
+    const animalTypeEl = document.getElementById('filterAnimalType');
+    const breedEl = document.getElementById('filterBreed');
+    const minPriceEl = document.getElementById('filterMinPrice');
+    const maxPriceEl = document.getElementById('filterMaxPrice');
+    const locationEl = document.getElementById('filterLocation');
+
+    // Update current filters only if elements exist
+    currentFilters.animalType = animalTypeEl ? animalTypeEl.value : 'all';
+    currentFilters.breed = breedEl ? breedEl.value.toLowerCase().trim() : '';
+    currentFilters.minPrice = minPriceEl ? parseInt(minPriceEl.value || 0) : 0;
+    currentFilters.maxPrice = maxPriceEl ? parseInt(maxPriceEl.value || 1000000) : 1000000;
+    currentFilters.location = locationEl ? locationEl.value.toLowerCase().trim() : '';
 
     let filtered = allListings;
 
@@ -155,15 +160,6 @@ function applyFilters() {
         filtered = filtered.filter(l => l.location.toLowerCase().includes(currentFilters.location));
     }
 
-    // Weight filter (only for chickens)
-    filtered = filtered.filter(l => {
-        if (l.animalType.toLowerCase() === 'chicken' && l.weightPerChicken) {
-            return Number(l.weightPerChicken) >= currentFilters.minWeight &&
-                   Number(l.weightPerChicken) <= currentFilters.maxWeight;
-        }
-        return true; // goats or listings without weight are included
-    });
-
     // Display filtered listings
     displayListings(filtered);
 
@@ -171,15 +167,19 @@ function applyFilters() {
     const resultsCount = filtered.length;
     const grid = document.getElementById('listingsGrid');
     if (grid && resultsCount > 0) {
+        const existingCount = grid.previousElementSibling;
+        if (existingCount && existingCount.classList.contains('results-count')) {
+            existingCount.remove();
+        }
+        
         const countMsg = document.createElement('p');
+        countMsg.className = 'results-count';
         countMsg.style.cssText = 'grid-column: 1/-1; text-align: center; color: #4A7C4E; font-weight: 600; margin-bottom: 1rem;';
         countMsg.textContent = `Found ${resultsCount} listing${resultsCount !== 1 ? 's' : ''}`;
         grid.insertAdjacentElement('beforebegin', countMsg);
         setTimeout(() => countMsg.remove(), 3000);
     }
 }
-
-
 
 function populateAnimalTypeFilter() {
     const select = document.getElementById('filterAnimalType');
@@ -199,31 +199,32 @@ function populateAnimalTypeFilter() {
     });
 }
 
-
-
-// Clear Filters
+// Clear Filters - FIXED VERSION
 function clearFilters() {
-    document.getElementById('filterAnimalType').value = 'all';
-    document.getElementById('filterBreed').value = '';
-    document.getElementById('filterMinPrice').value = '';
-    document.getElementById('filterMaxPrice').value = '';
-    document.getElementById('filterLocation').value = '';
-    document.getElementById('filterMinWeight').value = '';
-    document.getElementById('filterMaxWeight').value = '';
+    // Clear filter inputs only if they exist
+    const animalTypeEl = document.getElementById('filterAnimalType');
+    const breedEl = document.getElementById('filterBreed');
+    const minPriceEl = document.getElementById('filterMinPrice');
+    const maxPriceEl = document.getElementById('filterMaxPrice');
+    const locationEl = document.getElementById('filterLocation');
 
+    if (animalTypeEl) animalTypeEl.value = 'all';
+    if (breedEl) breedEl.value = '';
+    if (minPriceEl) minPriceEl.value = '';
+    if (maxPriceEl) maxPriceEl.value = '';
+    if (locationEl) locationEl.value = '';
+
+    // Reset filters object
     currentFilters = {
         animalType: 'all',
         breed: '',
         minPrice: 0,
         maxPrice: 1000000,
-        location: '',
-        minWeight: 0,
-        maxWeight: 100
+        location: ''
     };
 
     displayListings(allListings);
 }
-
 
 // Show Listing Detail
 function showListingDetail(listingId) {
@@ -323,7 +324,6 @@ window.onclick = function(event) {
     }
 }
 
-
 function showToast(message) {
     const toast = document.getElementById("toastModal");
     const toastMsg = document.getElementById("toastMessage");
@@ -343,8 +343,6 @@ function showToast(message) {
         }
     };
 }
-
-
 
 // Cart Management
 function initCart() {
@@ -565,15 +563,3 @@ Please contact the customer to confirm this order.`
         displayCart();
     }
 }
-
-// Update the initialization
-document.addEventListener('DOMContentLoaded', () => {
-    loadListings();
-    initCart();
-});
-
-
-
-
-
-
