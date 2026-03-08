@@ -1,8 +1,7 @@
 // API Base URL
 const API_URL = 'https://goldenharvest-backend.onrender.com';
 
-// Admin password
-const ADMIN_PASSWORD = 'goldenharvest123';
+
 
 // Check if admin is logged in
 document.addEventListener('DOMContentLoaded', () => {
@@ -12,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
 // Check admin authentication
 function checkAdminAuth() {
     const adminToken = localStorage.getItem('adminToken');
-    if (adminToken === ADMIN_PASSWORD) {
+    if (adminToken) {
         showAdminDashboard();
     } else {
         showAdminLogin();
@@ -33,13 +32,20 @@ function showAdminDashboard() {
 }
 
 // Handle admin login
-function handleAdminLogin(event) {
+async function handleAdminLogin(event) {
     event.preventDefault();
-    const formData = new FormData(event.target);
-    const password = formData.get('password');
-    
-    if (password === ADMIN_PASSWORD) {
-        localStorage.setItem('adminToken', password);
+    const password = new FormData(event.target).get('password');
+
+    const response = await fetch(`${API_URL}/api/admin/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password })
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+        localStorage.setItem('adminToken', data.token); // backend sends back the password as token
         showAdminDashboard();
         showToast('Login successful!');
     } else {
