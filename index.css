@@ -1133,3 +1133,21 @@ body {
     height:36px;
     border-radius:6px;
 }
+
+
+
+/* Lang switcher */
+.lang-switcher {
+    padding: 6px 10px;
+    border-radius: 8px;
+    border: 1.5px solid #ddd;
+    background: white;
+    cursor: pointer;
+    color: #212121 !important;
+    font-family: inherit;
+}
+
+.lang-switcher:focus {
+    outline: none;
+    border-color: #4A7C4E;
+}
