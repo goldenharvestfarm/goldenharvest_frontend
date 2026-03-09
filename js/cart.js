@@ -362,7 +362,7 @@ function showWeightRangeModal(item, itemIndex, isEdit = false) {
     modal.className = 'modal-overlay';
     modal.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 1000;';
     modal.innerHTML = `
-        <div class="modal-content" style="background: white; padding: 30px; border-radius: 12px; max-width: 500px; width: 90%; position: relative;">
+        <div class="modal-content" style="background: white; padding: 30px; border-radius: 12px; max-width: 500px; width: 90%; position:fixed;">
             <button onclick="this.closest('.modal-overlay').remove()" style="position: absolute; top: 15px; right: 15px; background: none; border: none; font-size: 28px; cursor: pointer;">×</button>
             <h2>${isEdit ? 'Edit' : 'Add'} Weight Range</h2>
             <form id="weightRangeForm">

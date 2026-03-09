@@ -297,63 +297,12 @@ function clearFilters() {
     displayListings(allListings);
 }
 
+
 // Show Listing Detail
 function showListingDetail(listingId) {
-    const listing = allListings.find(l => l._id === listingId);
-    if (!listing) return;
-    
-    const modal = document.getElementById('listingModal');
-    const modalBody = document.getElementById('modalBody');
-    
-    modalBody.innerHTML = `
-        <h2 style="color: #2E5C32; margin-bottom: 1rem;">${listing.breed}</h2>
-        <img src="${listing.image}" alt="${listing.breed}" class="modal-image">
-        <div class="modal-grid">
-            <div class="modal-item">
-                <h4>Animal Type</h4>
-                <p class="capitalize">${listing.animalType}</p>
-            </div>
-            <div class="modal-item">
-                <h4>Quantity Available</h4>
-                <p>${listing.quantity} units</p>
-            </div>
-            <div class="modal-item">
-                <h4>Price per Unit</h4>
-                <p style="color: #4A7C4E; font-size: 1.25rem; font-weight: 700;">${listing.pricePerUnit.toLocaleString()} RWF</p>
-            </div>
-            <div class="modal-item">
-                <h4>Location</h4>
-                <p>${listing.location}</p>
-            </div>
-            <div class="modal-item">
-                <h4>Health Status</h4>
-                <p>${listing.healthStatus}</p>
-            </div>
-        </div>
-        <div style="margin: 1.5rem 0;">
-            <h4 style="color: #757575; margin-bottom: 0.5rem;">Description</h4>
-            <p>${listing.description}</p>
-        </div>
-        <div class="modal-contact">
-            <h3>Contact Golden Harvest Farm</h3>
-            <p style="display: flex; align-items: center; gap: 0.5rem;">
-                <svg style="width: 20px; height: 20px; color: #4A7C4E;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
-                </svg>
-                <strong>${listing.phone || '+250 788 000 000'}</strong>
-            </p>
-            <p style="margin-top: 0.5rem; color: #555;">Call us to inquire about this livestock or arrange a visit to our farm.</p>
-        </div>
-    `;
-    
-    modal.classList.add('active');
+    window.location.href = `listing-detail.html?id=${listingId}`;
 }
 
-// Close Modal
-function closeModal() {
-    const modal = document.getElementById('listingModal');
-    modal.classList.remove('active');
-}
 
 // Handle Contact Form
 // Add this CSS to your stylesheet or <style> tag
@@ -523,13 +472,8 @@ async function handleContact(event) {
   }
 }
 
-// Close modal when clicking outside
-window.onclick = function(event) {
-    const modal = document.getElementById('listingModal');
-    if (event.target === modal) {
-        closeModal();
-    }
-}
+
+
 
 function showToast(message) {
     const toast = document.getElementById("toastModal");

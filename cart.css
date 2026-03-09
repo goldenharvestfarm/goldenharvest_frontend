@@ -1,4 +1,5 @@
 /* ── Cart Page ────────────────────────────────────────── */
+
 #cartPage {
     background: #faf9f6;
     opacity: 0;
@@ -542,4 +543,19 @@
 @keyframes slideInToast {
     from { opacity: 0; transform: translateY(20px); }
     to   { opacity: 1; transform: translateY(0); }
+}
+
+
+
+
+#cartPage {
+    min-height: unset; /* remove if you have min-height set */
+}
+
+.cart-body {
+    padding: 3rem 0 2rem; /* reduce bottom padding */
+}
+
+.footer {
+    margin-top: 0; /* remove footer top margin */
 }

@@ -108,7 +108,7 @@ function injectFooter() {
                 </div>
             </div>
             <div class="footer-bottom">
-                <p data-translate="footer_copyright">&copy; 2025 Golden Harvest Farm. All rights reserved.</p>
+                <p>&copy; ${new Date().getFullYear()} Golden Harvest Farm. All rights reserved.</p>
             </div>
         </div>
     </footer>
@@ -118,14 +118,6 @@ function injectFooter() {
         <div class="toast-content">
             <p id="toastMessage"></p>
             <button id="toastCloseBtn">OK</button>
-        </div>
-    </div>
-
-    <!-- Listing Detail Modal -->
-    <div id="listingModal" class="modal">
-        <div class="modal-content">
-            <span class="modal-close" onclick="closeModal()" aria-label="Close">×</span>
-            <div id="modalBody"></div>
         </div>
     </div>
     `;

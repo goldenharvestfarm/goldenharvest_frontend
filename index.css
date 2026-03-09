@@ -298,7 +298,7 @@ body {
 }
 
 .btn-primary {
-    background-color: #4A7C4E;
+    background-color: #1f3d22;
     color: white;
 }
 
@@ -924,26 +924,27 @@ body {
 
 /* Footer */
 .footer {
-    background-color: #212121;
+    background-color: #1f3d22; /* instead of #212121 */
     color: white;
     padding: 3rem 0 1rem;
-    margin-top: 4rem;
+    margin-top: 0;
 }
-
 .footer-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 2rem;
 }
 
+
 .footer-col h3,
 .footer-col h4 {
     margin-bottom: 1rem;
-    color: #4A7C4E;
+    color:  #ffffff;;
 }
 
 .footer-col ul {
     list-style: none;
+    margin-bottom: 1rem;
 }
 
 .footer-col ul li {
@@ -951,19 +952,17 @@ body {
 }
 
 .footer-col a {
-    color: #ddd;
-    text-decoration: none;
+    color: rgba(255,255,255,0.75); /* slightly softer white */
 }
 
 .footer-col a:hover {
-    color: white;
+    color: #fff;
 }
 
 .footer-bottom {
-    border-top: 1px solid #444;
-    padding-top: 1rem;
-    text-align: center;
-    color: #ddd;
+    border-top: 1px solid rgba(255,255,255,0.15); /* softer divider */
+    color: rgba(255,255,255,0.6);
+    margin-top: 1rem;
 }
 
 /* Responsive Design */

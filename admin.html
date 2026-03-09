@@ -137,7 +137,7 @@ a:hover {
 
 /* === ADMIN HEADER === */
 .admin-header {
-    background: linear-gradient(135deg, #4A7C4E 0%, #2E5C32 100%);
+    background: #1f3d22;
     color: white;
     padding: 1.5rem 0;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
@@ -453,67 +453,102 @@ a:hover {
 }
 
 /* === TABLES === */
+#allListingsTable {
+    width: 100%;
+    overflow-x: auto;
+    display: block;
+    min-width: 0;
+}
+
 .listing-table {
     background: white;
     border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
     margin-top: 1.5rem;
     border: 1px solid #e0e0e0;
+    overflow-x: auto;
+    min-width: 0;
 }
 
-.listing-table table {
+.table-wrapper {
     width: 100%;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+    border-radius: 12px;
+}
+
+.listing-table table,
+.table-wrapper table {
+    width: 100%;
+    min-width: 900px; /* ← forces scroll on small screens */
     border-collapse: collapse;
+    table-layout: auto;
 }
 
-.listing-table th {
-    background: linear-gradient(135deg, #4A7C4E 0%, #2E5C32 100%);
+.listing-table th,
+.table-wrapper table th {
+    background: #1f3d22 ;
     color: white;
-    padding: 1.25rem 1rem;
+    padding: 1.5rem 2rem;
     text-align: left;
-    font-weight: 600;
-    font-size: 0.95rem;
+    font-weight: 700;
+    font-size: 0.72rem;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.08em;
+    white-space: nowrap;
 }
 
-.listing-table td {
-    padding: 1.25rem 1rem;
+/* Column widths */
+.table-wrapper table th:nth-child(1) { width: 80px; }   /* Image */
+.table-wrapper table th:nth-child(2) { width: 90px; }   /* Type */
+.table-wrapper table th:nth-child(3) { width: 120px; }  /* Breed */
+.table-wrapper table th:nth-child(4) { width: 80px; }   /* Quantity */
+.table-wrapper table th:nth-child(5) { width: 110px; }  /* Price */
+.table-wrapper table th:nth-child(6) { width: 90px; }   /* Weight */
+.table-wrapper table th:nth-child(7) { width: 100px; }  /* Location */
+.table-wrapper table th:nth-child(8) { width: 110px; }  /* Health */
+.table-wrapper table th:nth-child(9) { width: 80px; }   /* Status */
+.table-wrapper table th:nth-child(10) { width: 140px; } /* Actions */
+
+.listing-table td,
+.table-wrapper table td {
+    padding: 1.5rem;
     border-bottom: 1px solid #f0f0f0;
-    font-size: 0.95rem;
-    color: #555;
+    font-size: 0.88rem;
+    color: #444;
+    vertical-align: middle;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
-.listing-table tbody tr {
-    transition: all 0.3s ease;
+.table-wrapper table tbody tr {
+    transition: background 0.2s;
 }
 
-.listing-table tbody tr:hover {
-    background: linear-gradient(90deg, #f0f7f1 0%, #fafafa 100%);
-    cursor: pointer;
-    transform: scale(1.01);
+.table-wrapper table tbody tr:hover {
+    background: #f0f7f1;
 }
 
-.listing-table tr:last-child td {
+.table-wrapper table tr:last-child td {
     border-bottom: none;
 }
 
 /* === LISTING IMAGES === */
 .listing-image-small {
-    width: 70px;
-    height: 70px;
+    width: 52px;
+    height: 52px;
     object-fit: cover;
-    border-radius: 10px;
-    border: 2px solid #e0e0e0;
-    transition: all 0.3s ease;
+    border-radius: 8px;
+    border: 1.5px solid #e0e0e0;
+    transition: transform 0.3s ease, box-shadow 0.3s;
     cursor: pointer;
+    display: block;
 }
 
 .listing-image-small:hover {
-    transform: scale(2);
+    transform: scale(2.5);
     border-color: #4A7C4E;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.25);
     z-index: 100;
     position: relative;
 }
@@ -521,132 +556,211 @@ a:hover {
 /* === BADGES === */
 .badge {
     display: inline-block;
-    padding: 0.4rem 1rem;
-    border-radius: 25px;
-    font-size: 0.8rem;
+    padding: 0.3rem 0.75rem;
+    border-radius: 999px;
+    font-size: 0.72rem;
     text-transform: uppercase;
     font-weight: 700;
-    letter-spacing: 0.5px;
-    border: 2px solid;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
 }
 
 .badge-chicken {
-    background: linear-gradient(135deg, #FFF3E0 0%, #FFE0B2 100%);
+    background: #FFF3E0;
     color: #F57C00;
-    border-color: #FFCC80;
+    border: 1.5px solid #FFCC80;
 }
 
 .badge-goat {
-    background: linear-gradient(135deg, #E8F5E9 0%, #C8E6C9 100%);
+    background: #E8F5E9;
     color: #2E7D32;
-    border-color: #A5D6A7;
+    border: 1.5px solid #A5D6A7;
+}
+
+/* Status badge */
+.badge-active {
+    background: #e8f5e9;
+    color: #2E5C32;
+    border: 1.5px solid #c8e6c9;
+}
+
+.badge-inactive {
+    background: #fce4ec;
+    color: #c62828;
+    border: 1.5px solid #ffcdd2;
 }
 
 /* === ACTION BUTTONS === */
 .action-buttons {
     display: flex;
-    gap: 0.75rem;
-    flex-wrap: wrap;
+    gap: 0.5rem;
+    flex-wrap: nowrap;
 }
 
-.action-buttons button {
-    padding: 0.6rem 1.25rem;
+.btn-edit,
+.btn-delete {
+    padding: 0.4rem 0.85rem;
     border: none;
     border-radius: 6px;
     cursor: pointer;
-    font-size: 0.875rem;
-    transition: all 0.3s ease;
-    font-weight: 600;
+    font-size: 0.78rem;
+    font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.action-buttons button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    letter-spacing: 0.05em;
+    transition: all 0.2s;
+    white-space: nowrap;
 }
 
 .btn-edit {
-    background: linear-gradient(135deg, #F9A825 0%, #F57F17 100%);
-    color: white;
+    background: #fff8e1;
+    color: #F57F17;
+    border: 1.5px solid #ffe082;
 }
 
 .btn-edit:hover {
-    background: linear-gradient(135deg, #F57F17 0%, #E65100 100%);
+    background: #F57F17;
+    color: #fff;
+    border-color: #F57F17;
 }
 
 .btn-delete {
-    background: linear-gradient(135deg, #d32f2f 0%, #b71c1c 100%);
-    color: white;
+    background: #fce4ec;
+    color: #c62828;
+    border: 1.5px solid #ffcdd2;
 }
 
 .btn-delete:hover {
-    background: linear-gradient(135deg, #b71c1c 0%, #8B0000 100%);
+    background: #c62828;
+    color: #fff;
+    border-color: #c62828;
 }
 
+/* Responsive */
+@media (max-width: 768px) {
+    .table-wrapper {
+        border-radius: 8px;
+    }
+
+    .listing-table td,
+    .table-wrapper table td {
+        font-size: 0.82rem;
+        padding: 0.75rem 0.6rem;
+    }
+}
+
+/* === MESSAGES === */
 /* === MESSAGES === */
 .messages-list {
     background: white;
     border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
     overflow: hidden;
     border: 1px solid #e0e0e0;
 }
 
 .message-item {
-    padding: 1.75rem;
+    padding: 1.2rem 1.75rem;
     border-bottom: 1px solid #f0f0f0;
-    transition: all 0.3s ease;
+    transition: background 0.2s;
 }
 
-.message-item:hover {
-    background: linear-gradient(90deg, #f0f7f1 0%, #fafafa 100%);
-    padding-left: 2rem;
-}
-
-.message-item:last-child {
-    border-bottom: none;
-}
+.message-item:hover { background: #fafffe; }
+.message-item:last-child { border-bottom: none; }
 
 .message-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 0.75rem;
+    margin-bottom: 0.4rem;
     flex-wrap: wrap;
     gap: 0.5rem;
 }
 
 .message-name {
     font-weight: 700;
-    color: #2E5C32;
-    font-size: 1.1rem;
+    color: #1f3d22;
+    font-size: 1rem;
 }
 
 .message-date {
     color: #999;
-    font-size: 0.875rem;
+    font-size: 0.8rem;
     font-style: italic;
 }
 
 .message-subject {
-    font-weight: 600;
-    margin-bottom: 0.75rem;
-    color: #333;
-    font-size: 1rem;
+    font-size: 0.88rem;
+    color: #555;
+    margin-bottom: 0.3rem;
+}
+
+.message-type-badge {
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 0.25rem 0.7rem;
+    border-radius: 999px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.badge-order   { background: #e8f5e9; color: #2E5C32; }
+.badge-contact { background: #e3f2fd; color: #1565c0; }
+
+.msg-eye-btn {
+    background: #f0f4f0;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 0.35rem 0.6rem;
+    cursor: pointer;
+    color: #2E5C32;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+}
+
+.msg-eye-btn:hover { background: #2E5C32; color: #fff; border-color: #2E5C32; }
+
+.message-detail {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px dashed #e0e0e0;
 }
 
 .message-content {
-    color: #555;
+    color: #444;
+    font-size: 0.9rem;
+    line-height: 1.7;
     margin-bottom: 0.75rem;
-    line-height: 1.6;
+    background: #faf9f6;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
 }
 
 .message-contact {
-    font-size: 0.875rem;
-    color: #757575;
-    font-weight: 500;
+    display: flex;
+    gap: 1.5rem;
+    font-size: 0.82rem;
+    color: #666;
+    margin-bottom: 1rem;
 }
+
+.msg-print-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: #1f3d22;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 0.5rem 1.1rem;
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+    font-family: inherit;
+}
+
+.msg-print-btn:hover { background: #2E5C32; }
 
 /* === ALERTS === */
 .alert {
@@ -945,6 +1059,58 @@ a:hover {
     from { opacity: 0; transform: scale(0.9); }
     to { opacity: 1; transform: scale(1); }
 }
+
+
+
+.msg-tabs {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1.2rem;
+}
+
+.msg-tab {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.55rem 1.2rem;
+    border: 1.5px solid #ddd;
+    border-radius: 999px;
+    background: #fff;
+    color: #555;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: inherit;
+}
+
+.msg-tab:hover {
+    border-color: #2E5C32;
+    color: #2E5C32;
+}
+
+.msg-tab.active {
+    background: #1f3d22;
+    color: #fff;
+    border-color: #1f3d22;
+}
+
+.msg-tab-count {
+    background: rgba(255,255,255,0.2);
+    padding: 0.1rem 0.5rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 800;
+}
+
+.msg-tab.active .msg-tab-count {
+    background: rgba(255,255,255,0.25);
+}
+
+.msg-tab:not(.active) .msg-tab-count {
+    background: #f0f0f0;
+    color: #888;
+}
     </style>
 </head>
 <body>
@@ -1095,11 +1261,23 @@ a:hover {
                     </div>
                 </div>
 
-                <!-- Messages Section -->
                 <div id="messagesSection" class="admin-section">
-                    <h2>Customer Messages</h2>
-                    <div id="messagesList" class="messages-list"></div>
-                </div>
+    <h2>Customer Messages</h2>
+
+    <div class="msg-tabs">
+        <button class="msg-tab active" onclick="filterMessages('all')">
+            All <span class="msg-tab-count" id="count-all">0</span>
+        </button>
+        <button class="msg-tab" onclick="filterMessages('order')">
+            🛒 Orders <span class="msg-tab-count" id="count-order">0</span>
+        </button>
+        <button class="msg-tab" onclick="filterMessages('contact')">
+            ✉️ Inquiries <span class="msg-tab-count" id="count-contact">0</span>
+        </button>
+    </div>
+
+    <div id="messagesList" class="messages-list"></div>
+</div>
             </div>
         </div>
     </div>
@@ -1112,6 +1290,6 @@ a:hover {
   </div>
 </div>
 
-    <script src="admin.js"></script>
+    <script src="js/admin.js"></script>
 </body>
 </html>
