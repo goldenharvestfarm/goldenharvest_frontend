@@ -1,5 +1,5 @@
 // API Base URL
-const API_URL = 'https://goldenharvest-backend.onrender.com';
+const API_URL = 'https://goldenharvest-backend-1.onrender.com';
 
 // Global State
 let allListings = [];
