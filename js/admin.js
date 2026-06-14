@@ -2,6 +2,29 @@
 const API_URL = 'https://goldenharvest-backend-1.onrender.com';
 
 
+function showToast(message, duration = 3000) {
+    // Check if a toast container exists, create one if not
+    let toast = document.getElementById('toast');
+    if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'toast';
+        toast.style.cssText = `
+            position: fixed; bottom: 2rem; right: 2rem;
+            background: #1f3d22; color: #fff;
+            padding: 0.8rem 1.5rem; border-radius: 8px;
+            font-size: 0.9rem; z-index: 9999;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            transition: opacity 0.3s;
+        `;
+        document.body.appendChild(toast);
+    }
+    toast.textContent = message;
+    toast.style.opacity = '1';
+    clearTimeout(toast._timeout);
+    toast._timeout = setTimeout(() => { toast.style.opacity = '0'; }, duration);
+}
+
+
 
 // Check if admin is logged in
 document.addEventListener('DOMContentLoaded', () => {
