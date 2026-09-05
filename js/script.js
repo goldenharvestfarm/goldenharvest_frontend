@@ -463,11 +463,11 @@ async function handleContact(event) {
       showSuccessModal('Message sent successfully! We will get back to you soon.');
       event.target.reset();
     } else {
-      showToast('Failed to send message. Please try calling us directly at +250 788 000 000');
+      showToast('Failed to send message. Please try calling us directly at +250 789 235 656');
     }
   } catch (error) {
     console.error('Error sending message:', error);
-    showSuccessModal('Message saved! We will contact you soon. You can also call us at +250 788 000 000');
+    showSuccessModal('Message saved! We will contact you soon. You can also call us at +250 789 235 656');
     event.target.reset();
   }
 }

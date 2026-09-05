@@ -742,7 +742,7 @@ function printMessage(index) {
                     <strong>Golden Harvest Farm</strong> · Kigali, Rwanda
                 </div>
                 <div>
-                    📞 +250 788 000 000 &nbsp;|&nbsp; ✉️ info@goldenharvestfarm.com
+                    📞 +250 789 235 656 &nbsp;|&nbsp; ✉️  goldenharvestfarm06@gmail.com
                 </div>
                 <div>
                     © ${new Date().getFullYear()} All rights reserved.

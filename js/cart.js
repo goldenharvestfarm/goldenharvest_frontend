@@ -53,7 +53,7 @@ function addToCart(listingId) {
             maxQuantity: listing.quantity,
             quantity: 1,
             location: listing.location,
-            phone: listing.phone || '+250 788 000 000'
+            phone: listing.phone || '+250 789 235 656'
         });
         showCartToast('Added to Cart!', `${listing.breed} has been added to your order.`);
     }
@@ -303,7 +303,7 @@ function addToCartWithWeight(listing, minWeight, maxWeight, quantity) {
         maxQuantity: listing.quantity,
         quantity: quantity,
         location: listing.location,
-        phone: listing.phone || '+250 788 000 000',
+        phone: listing.phone || '+250 789 235 656',
         weightRange: { min: minWeight, max: maxWeight, avgPerUnit: weightPerUnit }
     });
 
