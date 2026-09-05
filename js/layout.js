@@ -96,7 +96,8 @@ function injectFooter() {
                 </div>
                 <div class="footer-col">
                     <h4 data-translate="footer_contact">Contact</h4>
-                    
+                    <p data-translate="footer_phone">Phone: +250 789 235 656</p>
+                    <p data-translate="footer_email">Email: goldenharvestfarm06@gmail.com</p>
                     <p data-translate="footer_location">Location: Kigali, Rwanda</p>
                 </div>
                 <div class="footer-col">
